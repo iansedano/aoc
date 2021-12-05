@@ -1,7 +1,6 @@
 from pathlib import PurePath
 from dataclasses import dataclass
 
-import bingo_input
 from debug import p
 
 
