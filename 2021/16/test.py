@@ -1,6 +1,6 @@
 import input
 import bitsys
-
+import packets
 
 from debug import p
 from pprint import pp
@@ -97,48 +97,70 @@ def test_part_1():
     # bitsys.print_packets(packets)
 
     packet_5 = input.parse_hexadecimal(EX_05)
-    packets = bitsys.parse(packet_5)
-    p(bitsys.add_version(packets))
+    pkts = packets.parse(packet_5)
+    p(bitsys.add_version(pkts))
+    pkts[0].calculate_value()
+    p(pkts[0].value)
 
     packet_6 = input.parse_hexadecimal(EX_06)
-    packets = bitsys.parse(packet_6)
-    p(bitsys.add_version(packets))
+    pkts = packets.parse(packet_6)
+    p(bitsys.add_version(pkts))
+    pkts[0].calculate_value()
+    p(pkts[0].value)
 
     packet_7 = input.parse_hexadecimal(EX_07)
-    packets = bitsys.parse(packet_7)
-    p(bitsys.add_version(packets))
+    pkts = packets.parse(packet_7)
+    p(bitsys.add_version(pkts))
+    pkts[0].calculate_value()
+    p(pkts[0].value)
 
     packet_8 = input.parse_hexadecimal(EX_08)
-    packets = bitsys.parse(packet_8)
-    p(bitsys.add_version(packets))
+    pkts = packets.parse(packet_8)
+    p(bitsys.add_version(pkts))
+    pkts[0].calculate_value()
+    p(pkts[0].value)
 
     packet = input.parse_hexadecimal()
-    packets = bitsys.parse(packet)
-    p(len(packets))
-    print(bitsys.add_version(packets))
-
-    # packet_5 = input.parse_hexadecimal(EX_05)
-    # bitsys.print_packets(packet_5)
-    # packet_6 = input.parse_hexadecimal(EX_06)
-    # bitsys.print_packets(packet_6)
-    # packet_7 = input.parse_hexadecimal(EX_07)
-    # bitsys.print_packets(packet_7)
-    # packet_8 = input.parse_hexadecimal(EX_08)
-    # bitsys.print_packets(packet_8)
+    pkts = packets.parse(packet)
+    print(pkts[0])
+    print(bitsys.add_version(pkts))
+    pkts[0].calculate_value()
+    p(pkts[0].value)
 
 
-test_part_1()
+def test_part_2():
+    """what do you get if you add up the version numbers in all packets?"""
+
+    packet_5 = input.parse_hexadecimal("C200B40A82")
+    pkts = packets.parse(packet_5)
+    p(bitsys.add_version(pkts))
+    pkts[0].calculate_value()
+    p(pkts[0].value)
+
+    packet_6 = input.parse_hexadecimal("04005AC33890")
+    pkts = packets.parse(packet_6)
+    p(bitsys.add_version(pkts))
+    pkts[0].calculate_value()
+    p(pkts[0].value)
+
+    packet_7 = input.parse_hexadecimal("880086C3E88112")
+    pkts = packets.parse(packet_7)
+    p(bitsys.add_version(pkts))
+    pkts[0].calculate_value()
+    p(pkts[0].value)
+
+    packet_8 = input.parse_hexadecimal("CE00C43D881120")
+    pkts = packets.parse(packet_8)
+    p(bitsys.add_version(pkts))
+    pkts[0].calculate_value()
+    p(pkts[0].value)
+
+    packet = input.parse_hexadecimal()
+    pkts = packets.parse(packet)
+    print(pkts[0])
+    print(bitsys.add_version(pkts))
+    pkts[0].calculate_value()
+    p(pkts[0].value)
 
 
-def test_part2():
-    pass
-
-
-# test_part2()
-
-"""
-
-
-
-
-"""
+test_part_2()
