@@ -46,24 +46,23 @@ The 11 bits labeled B contain the second sub-packet, a literal value representin
 The 11 bits labeled C contain the third sub-packet, a literal value representing the number 3.
 """
 
-EX_04 = [
-    # operator packet (version 4) which contains an operator packet (version 1)
-    # which contains an operator packet (version 5) which contains a
-    # literal value (version 6); this packet has a version sum of 16.
-    "8A004A801A8002F478",
-    # represents an operator packet (version 3) which contains two sub-packets;
-    # each sub-packet is an operator packet that contains two literal values.
-    # This packet has a version sum of 12.
-    "620080001611562C8802118E34",
-    # has the same structure as the previous example,
-    # but the outermost packet uses a different length type ID.
-    # This packet has a version sum of 23.
-    "C0015000016115A2E0802F182340",
-    # is an operator packet that contains an operator packet that contains an
-    # operator packet that contains five literal values;
-    # it has a version sum of 31.
-    "A0016C880162017C3686B18A3D4780",
-]
+
+# operator packet (version 4) which contains an operator packet (version 1)
+# which contains an operator packet (version 5) which contains a
+# literal value (version 6); this packet has a version sum of 16.
+EX_05 = "8A004A801A8002F478"
+# represents an operator packet (version 3) which contains two sub-packets;
+# each sub-packet is an operator packet that contains two literal values.
+# This packet has a version sum of 12.
+EX_06 = "620080001611562C8802118E34"
+# has the same structure as the previous example,
+# but the outermost packet uses a different length type ID.
+# This packet has a version sum of 23.
+EX_07 = "C0015000016115A2E0802F182340"
+# is an operator packet that contains an operator packet that contains an
+# operator packet that contains five literal values;
+# it has a version sum of 31.
+EX_08 = "A0016C880162017C3686B18A3D4780"
 
 
 def test_input():
@@ -86,11 +85,45 @@ def test_part_1():
     # packet_1 = input.parse_hexadecimal(EX_01)
     # bitsys.parse(packet_1)
 
-    packet_2 = input.parse_hexadecimal(EX_02)
-    bitsys.parse(packet_2)
+    # packet_2 = input.parse_hexadecimal(EX_02)
+    # packets = bitsys.parse(packet_2)
+    # p(len(packets))
+    # bitsys.print_packets(packets)
+    # print(packets[0].children[0].value)
 
     # packet_3 = input.parse_hexadecimal(EX_03)
-    # bitsys.parse(packet_3)
+    # packets = bitsys.parse(packet_3)
+    # p(len(packets))
+    # bitsys.print_packets(packets)
+
+    packet_5 = input.parse_hexadecimal(EX_05)
+    packets = bitsys.parse(packet_5)
+    p(bitsys.add_version(packets))
+
+    packet_6 = input.parse_hexadecimal(EX_06)
+    packets = bitsys.parse(packet_6)
+    p(bitsys.add_version(packets))
+
+    packet_7 = input.parse_hexadecimal(EX_07)
+    packets = bitsys.parse(packet_7)
+    p(bitsys.add_version(packets))
+
+    packet_8 = input.parse_hexadecimal(EX_08)
+    packets = bitsys.parse(packet_8)
+    p(bitsys.add_version(packets))
+
+    packet = input.parse_hexadecimal()
+    packets = bitsys.parse(packet)
+    print(bitsys.add_version(packets))
+
+    # packet_5 = input.parse_hexadecimal(EX_05)
+    # bitsys.print_packets(packet_5)
+    # packet_6 = input.parse_hexadecimal(EX_06)
+    # bitsys.print_packets(packet_6)
+    # packet_7 = input.parse_hexadecimal(EX_07)
+    # bitsys.print_packets(packet_7)
+    # packet_8 = input.parse_hexadecimal(EX_08)
+    # bitsys.print_packets(packet_8)
 
 
 test_part_1()
@@ -101,3 +134,10 @@ def test_part2():
 
 
 # test_part2()
+
+"""
+
+
+
+
+"""
