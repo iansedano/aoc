@@ -11,12 +11,26 @@ class Bit_gen:
         self._bit_string = (bit for bit in bit_string)
         self.counter = 0
         self.G = (bit for bit in bit_string)
+        self.buffer = []
+
+    def next(self):
+        if len(self.buffer) > 0:
+            return self.buffer.pop(0)
+        else:
+            return next(self.G, None)
+
+    def peek(self, num):
+        if len(self.buffer) > 0:
+            raise Exception("Buffer already has elements inside")
+        for _ in range(num):
+            self.buffer.append(next(self.G, None))
+        return self.buffer
 
     def get_bits(self, num) -> str:
         self.counter += num
         output = []
         for _ in range(num):
-            output.append(next(self.G, None))
+            output.append(self.next())
         return "".join(output)
 
     def get_int(self, num) -> int:
@@ -71,7 +85,10 @@ class Operator(Packet):
         if self.length_type_id == "0":
             length = self.bit_gen.get_int(15)
             self.counter += 15 + length
+            p(length)
             self.sub_packet_string = self.bit_gen.get_bits(length)
+            p(self.sub_packet_string)
+            self.clear_trailing_zeros()
 
         elif self.length_type_id == "1":
             sub_packets_to_get = self.bit_gen.get_int(11)
@@ -81,10 +98,16 @@ class Operator(Packet):
                 packet = self.bit_gen.get_bits(11)
                 self.counter += 11
                 self.sub_packet_list.append(packet)
+            self.clear_trailing_zeros()
+
+    def clear_trailing_zeros(self):
+        while self.bit_gen.peek(1) != 1:
+            self.bit_gen.get_bits(1)
+        return
 
 
 def process_packet(bit_gen):
-    
+
     version = bit_gen.get_int(3)
     type = bit_gen.get_int(3)
     print(f"Packet version {version}, type {type}")

@@ -83,11 +83,11 @@ test_input()
 def test_part_1():
     """what do you get if you add up the version numbers in all packets?"""
 
-    packet_1 = input.parse_hexadecimal(EX_01)
-    bitsys.parse(packet_1)
+    # packet_1 = input.parse_hexadecimal(EX_01)
+    # bitsys.parse(packet_1)
 
-    # packet_2 = input.parse_hexadecimal(EX_02)
-    # bitsys.parse(packet_2)
+    packet_2 = input.parse_hexadecimal(EX_02)
+    bitsys.parse(packet_2)
 
     # packet_3 = input.parse_hexadecimal(EX_03)
     # bitsys.parse(packet_3)
