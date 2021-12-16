@@ -114,6 +114,7 @@ def test_part_1():
 
     packet = input.parse_hexadecimal()
     packets = bitsys.parse(packet)
+    p(len(packets))
     print(bitsys.add_version(packets))
 
     # packet_5 = input.parse_hexadecimal(EX_05)
