@@ -11,6 +11,10 @@ class Node:
     def find_leaf(self):
         current = self
 
+        if isinstance(current, S_num):
+            if current.is_leaf() == True:
+                return current
+
         if isinstance(current, P_int):
             current = current.parent
 
@@ -19,6 +23,8 @@ class Node:
                 current = current.left
             elif isinstance(current.right, S_num):
                 current = current.right
+
+        return current
 
 
 class P_int(Node):
@@ -225,7 +231,23 @@ class S_num(Node):
         if self.get_root() is not self:
             raise Exception("only call this method on root")
 
-        # find leaf
+        root = self
+
+        while True:
+            leaf = root.find_leaf()
+            if leaf is root:
+                break
+
+            if leaf.parent.left is leaf:
+                leaf.parent.left = P_int(
+                    leaf.left.value * 3 + leaf.right.value * 2, leaf.parent
+                )
+            elif leaf.parent.right is leaf:
+                leaf.parent.right = P_int(
+                    leaf.left.value * 3 + leaf.right.value * 2, leaf.parent
+                )
+
+        return root.left.value * 3 + root.right.value * 2
 
 
 def build_snum(raw_snum):
@@ -256,3 +278,40 @@ def process_lines(lines):
         snum = add_snums(snum, S_num(line))
         snum.process()
     return snum
+
+
+def find_largest_pair(lines):
+
+    largest = 0
+
+    for i, line in enumerate(lines):
+
+        for j, line2 in enumerate(lines):
+
+            snum = S_num(json.loads(line))
+
+            if i == j:
+                print("skipping")
+                continue
+
+            snum_2 = S_num(json.loads(line2))
+
+            master_snum = add_snums(snum, snum_2)
+            master_snum.process()
+            mag = master_snum.calculate_magnitude()
+
+            if mag > largest:
+                largest = mag
+
+            snum = S_num(json.loads(line))
+
+            snum_2 = S_num(json.loads(line2))
+
+            master_snum = add_snums(snum_2, snum)
+            master_snum.process()
+            mag = master_snum.calculate_magnitude()
+
+            if mag > largest:
+                largest = mag
+
+    return largest

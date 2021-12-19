@@ -14,4 +14,4 @@ def get_info_from_file(path=Path(Path(__file__).parent, "input.txt")):
 def parse_snail_nums(raw_string=get_info_from_file()):
     lines = raw_string.strip().split("\n")
 
-    snums = [snail.build_snum(line) for line in lines]
+    return lines

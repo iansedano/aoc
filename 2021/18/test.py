@@ -85,13 +85,23 @@ def test_part_1():
     processed = snail.process_lines(ex.ex_05[0].strip().split("\n"))
     assert processed.toList() == json.loads(ex.ex_05[1])
 
+    processed = snail.process_lines(ex.ex_homework.strip().split("\n"))
+    assert processed.toList() == json.loads(ex.ex_homework_final)
+    assert processed.calculate_magnitude() == ex.ex_homework_mag
+
+    processed = snail.process_lines(input.parse_snail_nums())
+    assert processed.calculate_magnitude() == 4347
+
 
 test_part_1()
 
-# p = [
-#     [
-#         [0, 11],
-#         [15 0]
-#     ],
-#     [14, 1]
-# ]
+
+def test_part_2():
+    largest_mag = snail.find_largest_pair(ex.ex_homework.strip().split("\n"))
+    print("LARGEST MAG", largest_mag)
+
+    largest_mag = snail.find_largest_pair(input.parse_snail_nums())
+    print("LARGEST MAG", largest_mag)
+
+
+test_part_2()
