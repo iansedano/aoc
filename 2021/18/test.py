@@ -71,24 +71,18 @@ def test_part_1():
     snum = snail.process_lines(
         "[[[[4, 3], 4], 4], [7, [[8, 4], 9]]]\n[1, 1]".split("\n")
     )
-    print(snum.toList())
-
     assert snum.toList() == [[[[0, 7], 4], [[7, 8], [6, 0]]], [8, 1]]
 
     processed = snail.process_lines(ex.ex_02[0].split("\n"))
-
     assert processed.toList() == [[[[1, 1], [2, 2]], [3, 3]], [4, 4]]
 
     processed = snail.process_lines(ex.ex_03[0].split("\n"))
-
     assert processed.toList() == json.loads(ex.ex_03[1])
 
     processed = snail.process_lines(ex.ex_04[0].split("\n"))
-
     assert processed.toList() == json.loads(ex.ex_04[1])
 
     processed = snail.process_lines(ex.ex_05[0].strip().split("\n"))
-    print(processed.toList())
     assert processed.toList() == json.loads(ex.ex_05[1])
 
 
