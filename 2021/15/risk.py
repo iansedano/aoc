@@ -1,12 +1,18 @@
 from debug import p
 from pprint import pp
+import heapq
+from collections import namedtuple
+
+Point = namedtuple("Point", ["x", "y"])
+Position = namedtuple("Position", ["cost", "point"])
 
 
 def find_path(risk_map):
     w = len(risk_map) - 1
     h = len(risk_map[0]) - 1
-    current_pos = (0, 0)
+    current_pos = Position(0, Point(0, 0))
     queue = []
+    heapq.heapify(queue)
 
     costs = {}
     visited_set = set()
@@ -15,44 +21,36 @@ def find_path(risk_map):
         for j in range(h + 1):
             costs[(i, j)] = float("inf")
 
-    cardinals = [(-1, 0), (0, 1), (1, 0), (0, -1)]
+    cardinals = [Point(-1, 0), Point(0, 1), Point(1, 0), Point(0, -1)]
 
-    def get_possible_weighted_positions(pos):
+    def get_possible_positions(pos):
         paths = []
 
         for c in cardinals:
-            new_pos = (c[0] + pos[0], c[1] + pos[1])
+            new_pos = Point(c[0] + pos[0], c[1] + pos[1])
             if (
                 new_pos[0] <= w
                 and new_pos[0] >= 0
                 and new_pos[1] <= h
                 and new_pos[1] >= 0
             ):
-                weighted_pos = (
-                    new_pos[0],
-                    new_pos[1],
-                    risk_map[new_pos[0]][new_pos[1]],
-                )
+                weighted_pos = Position(risk_map[new_pos[0]][new_pos[1]], new_pos)
                 paths.append(weighted_pos)
-
         return paths
 
-    costs[current_pos] = 0
-    queue.append(current_pos)
+    heapq.heappush(queue, current_pos)
 
     while len(queue) > 0:
-        current_pos = queue.pop(0)
+        current_pos = heapq.heappop(queue)
 
-        next_possible_weighted_positions = get_possible_weighted_positions(current_pos)
+        next_possible_positions = get_possible_positions(current_pos.point)
 
-        for w_pos in next_possible_weighted_positions:
-            weight = w_pos[2]
-            n_pos = tuple(w_pos[:2])
-            if costs[current_pos] + weight < costs[n_pos]:
-                costs[n_pos] = costs[current_pos] + weight
-                queue.append(n_pos)
-            if n_pos not in queue and n_pos not in visited_set:
-                queue.append(n_pos)
+        for possible_pos in next_possible_positions:
+            if current_pos.cost + possible_pos.cost < costs[possible_pos.point]:
+                costs[possible_pos.point] = costs[current_pos.point] + possible_pos.cost
+                heapq.heappush(queue, possible_pos)
+            if possible_pos not in queue and possible_pos not in visited_set:
+                heapq.heappush(queue, possible_pos)
 
         visited_set.add(current_pos)
 
