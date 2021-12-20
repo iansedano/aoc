@@ -14,29 +14,30 @@ def find_path(risk_map):
     queue = []
     heapq.heapify(queue)
 
-    costs = {}
-    visited_set = set()
+    costs: dict[Point:int] = {}
+    visited_set: set[Position] = set()
 
     for i in range(w + 1):
         for j in range(h + 1):
-            costs[(i, j)] = float("inf")
-
+            costs[Point(i, j)] = float("inf")
+    costs[Point(0, 0)] = 0
     cardinals = [Point(-1, 0), Point(0, 1), Point(1, 0), Point(0, -1)]
 
     def get_possible_positions(pos):
         paths = []
 
         for c in cardinals:
-            new_pos = Point(c[0] + pos[0], c[1] + pos[1])
+            new_point = Point(c[0] + pos[0], c[1] + pos[1])
             if (
-                new_pos[0] <= w
-                and new_pos[0] >= 0
-                and new_pos[1] <= h
-                and new_pos[1] >= 0
+                new_point[0] <= w
+                and new_point[0] >= 0
+                and new_point[1] <= h
+                and new_point[1] >= 0
             ):
-                weighted_pos = Position(risk_map[new_pos[0]][new_pos[1]], new_pos)
+                weighted_pos = Position(risk_map[new_point.x][new_point.y], new_point)
                 paths.append(weighted_pos)
-        return paths
+
+        return sorted(paths, key=lambda p: p.cost)
 
     heapq.heappush(queue, current_pos)
 
@@ -46,16 +47,26 @@ def find_path(risk_map):
         next_possible_positions = get_possible_positions(current_pos.point)
 
         for possible_pos in next_possible_positions:
-            if current_pos.cost + possible_pos.cost < costs[possible_pos.point]:
-                costs[possible_pos.point] = costs[current_pos.point] + possible_pos.cost
-                heapq.heappush(queue, possible_pos)
-            if possible_pos not in queue and possible_pos not in visited_set:
-                heapq.heappush(queue, possible_pos)
+            if possible_pos.point not in visited_set:
 
-        visited_set.add(current_pos)
+                if current_pos.cost + possible_pos.cost < costs[possible_pos.point]:
+                    costs[possible_pos.point] = (
+                        costs[current_pos.point] + possible_pos.cost
+                    )
 
-    return costs
-    return costs[(w, h)]
+                skip = False
+                for candidate in queue:
+                    if candidate.point == possible_pos.point:
+                        if candidate.cost > possible_pos.cost:
+                            candidate.cost = possible_pos.cost
+                        skip = True
+
+                if skip == False:
+                    heapq.heappush(queue, possible_pos)
+
+        visited_set.add(current_pos.point)
+    print(costs[Point(w, h)])
+    return costs[Point(w, h)]
 
 
 def print_iter_of_pos(iter, risk_map):

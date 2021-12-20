@@ -41,11 +41,17 @@ def test_part_1():
     risk_map = input.parse_risk(EX_01)
     assert risk.find_path(risk_map) == 40
 
+    risk_map = input.parse_risk(EX_02)
+    assert risk.find_path(risk_map) == 8
+
+    risk_map = input.parse_risk(EX_03)
+    assert risk.find_path(risk_map) == 12
+
     risk_map = input.parse_risk()
     assert risk.find_path(risk_map) == 435
 
 
-# test_part_1()
+test_part_1()
 
 
 def test_part2():
