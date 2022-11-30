@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class day01 {
+public class Day01 {
   public static void main(String[] args) throws IOException {
     SolutionDay01 solution = new SolutionDay01();
     System.out.println(solution.partOne());
