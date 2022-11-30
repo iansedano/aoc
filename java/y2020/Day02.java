@@ -48,8 +48,19 @@ class SolutionDay02 {
     return this.inputs.stream().filter(entry -> entry.isValid).count();
   }
 
-  int partTwo() {
-    return 0;
+  long partTwo() {
+    return this.lines.stream()
+      .map(line -> line.strip().split("[ -]"))
+      .map(splitline ->
+        new EntryPart2(
+          Integer.parseInt(splitline[0]),
+          Integer.parseInt(splitline[1]),
+          splitline[2].charAt(0),
+          splitline[3]
+        )
+      )
+      .filter(entry -> entry.isValid)
+      .count();
   }
 }
 
@@ -72,5 +83,25 @@ class EntryPart1 {
     if (lower <= count & count <= upper) {
       isValid = true;
     } else isValid = false;
+  }
+}
+
+class EntryPart2 {
+
+  int posOne;
+  int posTwo;
+  char letter;
+  String password;
+  Boolean isValid;
+
+  public EntryPart2(int lower, int upper, char letter, String password) {
+    this.posOne = lower;
+    this.posTwo = upper;
+    this.letter = letter;
+    this.password = password;
+
+    this.isValid =
+      password.charAt(posOne - 1) == this.letter ^
+      password.charAt(posTwo - 1) == this.letter;
   }
 }
