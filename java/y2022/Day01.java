@@ -19,34 +19,29 @@ public class Day01 {
 
 class SolutionDay01 {
   String text;
-  List<String> elves;
+  List<Integer> elves;
 
   public SolutionDay01() throws IOException {
     this.text = Readers.readText("y2022/day01.txt");
     String separator = System.getProperty("line.separator");
-    this.elves = Arrays.stream(this.text
-        .split(separator + separator)).collect(Collectors.toList());
-  }
-
-  int partOne() {
-    return Collections.max(this.elves.stream()
+    this.elves = Arrays.stream(
+        this.text
+            .split(separator + separator))
         .map(elf -> {
           elf = elf.strip();
           return Arrays.stream(elf.split("\n"))
               .map(String::trim)
               .mapToInt(Integer::parseInt).sum();
         })
-        .toList());
+        .collect(Collectors.toList());
+  }
+
+  int partOne() {
+    return Collections.max(this.elves);
   }
 
   int partTwo() {
     return this.elves.stream()
-        .map(elf -> {
-          elf = elf.strip();
-          return Arrays.stream(elf.split("\n"))
-              .map(String::trim)
-              .mapToInt(Integer::parseInt).sum();
-        })
         .sorted(Comparator.reverseOrder())
         .limit(3)
         .mapToInt(i -> i)
