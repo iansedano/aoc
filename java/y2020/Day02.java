@@ -27,17 +27,14 @@ class SolutionDay02 {
 
   List<EntryPart1> parseInputs(List<String> lines) {
     return lines
-      .stream()
-      .map(line -> line.strip().split("[ -]"))
-      .map(splitline ->
-        new EntryPart1(
-          Integer.parseInt(splitline[0]),
-          Integer.parseInt(splitline[1]),
-          splitline[2].charAt(0),
-          splitline[3]
-        )
-      )
-      .collect(Collectors.toList());
+        .stream()
+        .map(line -> line.strip().split("[ -]"))
+        .map(splitLine -> new EntryPart1(
+            Integer.parseInt(splitLine[0]),
+            Integer.parseInt(splitLine[1]),
+            splitLine[2].charAt(0),
+            splitLine[3]))
+        .collect(Collectors.toList());
   }
 
   List<String> read(String path) throws IOException {
@@ -50,17 +47,14 @@ class SolutionDay02 {
 
   long partTwo() {
     return this.lines.stream()
-      .map(line -> line.strip().split("[ -]"))
-      .map(splitline ->
-        new EntryPart2(
-          Integer.parseInt(splitline[0]),
-          Integer.parseInt(splitline[1]),
-          splitline[2].charAt(0),
-          splitline[3]
-        )
-      )
-      .filter(entry -> entry.isValid)
-      .count();
+        .map(line -> line.strip().split("[ -]"))
+        .map(splitline -> new EntryPart2(
+            Integer.parseInt(splitline[0]),
+            Integer.parseInt(splitline[1]),
+            splitline[2].charAt(0),
+            splitline[3]))
+        .filter(entry -> entry.isValid)
+        .count();
   }
 }
 
@@ -80,9 +74,7 @@ class EntryPart1 {
 
     long count = password.chars().filter(ch -> ch == this.letter).count();
 
-    if (lower <= count & count <= upper) {
-      isValid = true;
-    } else isValid = false;
+    isValid = lower <= count & count <= upper;
   }
 }
 
@@ -100,8 +92,17 @@ class EntryPart2 {
     this.letter = letter;
     this.password = password;
 
-    this.isValid =
-      password.charAt(posOne - 1) == this.letter ^
-      password.charAt(posTwo - 1) == this.letter;
+    this.isValid = password.charAt(posOne - 1) == this.letter ^
+        password.charAt(posTwo - 1) == this.letter;
   }
 }
+
+// 0 != 0 False
+// 1 != 0 True
+// 0 != 1 True
+// 1 != 1 False
+
+// 0 + 0 = 0 == 1 False
+// 1 + 0 = 1 == 1 True
+// 0 + 1 = 1 == 1 True
+// 1 + 1 = 2 == 1 False

@@ -1,18 +1,24 @@
 {
-    "configurations": [
-        {
-            "name": "Python: Current File",
-            "type": "python",
-            "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal",
-            "variablePresentation": {
-                "all": "inline",
-                "class": "group",
-                "function": "hide",
-                // "protected": "hide",
-                "special": "hide"
-            }
-        }
-    ]
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Launch Day01",
+      "request": "launch",
+      "mainClass": "y2022.Day01",
+      "projectName": "aoc_dba46d52"
+    },
+    {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "variablePresentation": {
+        "all": "inline",
+        "class": "group",
+        "function": "hide",
+        "special": "hide"
+      }
+    }
+  ]
 }
