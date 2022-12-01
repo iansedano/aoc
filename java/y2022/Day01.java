@@ -1,14 +1,11 @@
 package y2022;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import AocTools.Readers;
 
@@ -22,16 +19,17 @@ public class Day01 {
 
 class SolutionDay01 {
   String text;
-  List<Integer> depths;
+  List<String> elves;
 
   public SolutionDay01() throws IOException {
     this.text = Readers.readText("y2022/day01.txt");
+    String separator = System.getProperty("line.separator");
+    this.elves = Arrays.stream(this.text
+        .split(separator + separator)).collect(Collectors.toList());
   }
 
   int partOne() {
-    String separator = System.getProperty("line.separator");
-    return Collections.max(Arrays.stream(this.text
-        .split(separator + separator))
+    return Collections.max(this.elves.stream()
         .map(elf -> {
           elf = elf.strip();
           return Arrays.stream(elf.split("\n"))
@@ -42,9 +40,7 @@ class SolutionDay01 {
   }
 
   int partTwo() {
-    String separator = System.getProperty("line.separator");
-    return Arrays.stream(this.text
-        .split(separator + separator))
+    return this.elves.stream()
         .map(elf -> {
           elf = elf.strip();
           return Arrays.stream(elf.split("\n"))
