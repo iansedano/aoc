@@ -42,13 +42,9 @@ public class Day02 {
   }
 
   public static void main(String[] args) throws IOException {
-    List<String> lines = Day02.read();
+    List<String> lines = Readers.readLines("y2022/day02.txt");
     System.out.println(Day02.partOne(lines));
     System.out.println(Day02.partTwo(lines));
-  }
-
-  static List<String> read() throws IOException {
-    return Readers.readLines("y2022/day02.txt");
   }
 
   static int partOne(List<String> lines) {

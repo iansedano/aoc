@@ -1,4 +1,4 @@
-package y2021;
+package y2022;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,12 +11,9 @@ import AocTools.Readers;
 
 public class DayXX {
   public static void main(String[] args) throws IOException {
+    List<String> lines = Readers.readLines("y2022/day__.txt");
     System.out.println(DayXX.partOne());
     System.out.println(DayXX.partTwo());
-  }
-
-  static List<String> read() throws IOException {
-    return Readers.readLines("y2021/day__.txt");
   }
 
   static int partOne() {
