@@ -24,9 +24,8 @@ class SolutionDay01 {
   public SolutionDay01() throws IOException {
     this.text = Readers.readText("y2022/day01.txt");
     String separator = System.getProperty("line.separator");
-    this.elves = Arrays.stream(
-        this.text
-            .split(separator + separator))
+
+    this.elves = Arrays.stream(this.text.split(separator + separator))
         .map(elf -> {
           elf = elf.strip();
           return Arrays.stream(elf.split("\n"))
