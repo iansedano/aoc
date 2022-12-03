@@ -1,15 +1,17 @@
-import pathlib
+from aocd import get_data
 
-INPUT_FILE = ""
 
 def parse(puzzle_input):
     """Parse input."""
 
+
 def part1(data):
     """Solve part 1."""
 
+
 def part2(data):
     """Solve part 2."""
+
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input."""
@@ -19,7 +21,8 @@ def solve(puzzle_input):
 
     return solution1, solution2
 
+
 if __name__ == "__main__":
-    puzzle_input = pathlib.Path(INPUT_FILE).read_text().strip()
+    puzzle_input = get_data(day=2, year=2022).strip()
     solutions = solve(puzzle_input)
     print("\n".join(str(solution) for solution in solutions))
