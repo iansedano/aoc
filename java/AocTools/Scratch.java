@@ -10,6 +10,9 @@ public class Scratch {
     System.out.println(charNums('Z'));
     
     Scratch.subLists();
+    
+    int[] l = {1,2,3,4,5};
+    System.out.println(l.toString());
   }
   
   public static int charNums(char ch){
