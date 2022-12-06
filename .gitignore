@@ -2,3 +2,6 @@ __pycache__
 venv
 bin
 build
+.env
+.env.leave
+
