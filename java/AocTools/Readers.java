@@ -20,14 +20,16 @@ public class Readers {
   public static List<String> readLines(String path) throws IOException {
     return Files.readAllLines(Paths.get(path)).stream()
         .filter(line -> line != "")
-        .toList();
+        .collect(Collectors.toList());
   }
 
   public static List<List<String>> readChunks(String path) throws IOException {
-    return Arrays.stream(Readers.readText(path).split("\n\n"))
-        .map(chunk -> Arrays.stream(chunk.split("\n"))
-            .toList())
-        .toList();
+    return Arrays
+        .stream(Readers.readText(path).split("\n\n"))
+        .map(chunk -> Arrays
+          .stream(chunk.split("\n"))
+          .collect(Collectors.toList()))
+        .collect(Collectors.toList());
   }
 
 }
