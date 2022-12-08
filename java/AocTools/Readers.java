@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import AocTools.StringUtils;
+
 public class Readers {
 
   public static List<Integer> readInts(List<String> lines) {
@@ -30,6 +32,10 @@ public class Readers {
           .stream(chunk.split("\n"))
           .collect(Collectors.toList()))
         .collect(Collectors.toList());
+  }
+  
+  public static List<Character> readCharList(String path) throws IOException {
+    return StringUtils.toCharList(Readers.readText(path));
   }
 
 }
