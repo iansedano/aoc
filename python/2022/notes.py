@@ -124,10 +124,3 @@ def rock_paper_scissors_p2(f):
                 ans += (a + 1) % 3 + 1
 
     return ans
-
-
-def find_common(items):
-    return set.intersection(*map(set, items)).pop()
-
-
-print(find_common([[1, 2, 3], [3, 4, 5]]))
