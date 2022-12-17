@@ -1,7 +1,7 @@
-from vent_input import parse_vent_data
+from pprint import pp
 
 from debug import p
-from pprint import pp
+from vent_input import parse_vent_data
 
 Point = tuple[int, int]
 Line = tuple[Point, Point]

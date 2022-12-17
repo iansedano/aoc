@@ -1,9 +1,7 @@
 from pathlib import Path
-
-
-from debug import p
 from pprint import pp
 
+from debug import p
 
 Point = tuple[int, int]
 

@@ -1,8 +1,7 @@
 from pathlib import Path
 
-from elements import Token, Token_type
-
 from debug import p
+from elements import Token, Token_type
 
 
 def get_info_from_file(path=Path(Path(__file__).parent, "input.txt")):

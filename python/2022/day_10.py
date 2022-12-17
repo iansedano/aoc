@@ -1,5 +1,6 @@
-from aocd import get_data
 from pprint import pp
+
+from aocd import get_data
 
 
 def parse(puzzle_input):

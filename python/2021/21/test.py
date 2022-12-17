@@ -1,6 +1,5 @@
 import dirac
 
-
 ex_player_1 = 4
 ex_player_2 = 8
 

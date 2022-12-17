@@ -1,10 +1,9 @@
 import json
+import math
 import re
-
-from debug import p
 from pprint import pp
 
-import math
+from debug import p
 
 
 class Node:

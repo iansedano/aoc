@@ -1,6 +1,7 @@
-from typ import Point, Img
-from debug import p
 from pprint import pp
+
+from debug import p
+from typ import Img, Point
 
 
 class Enhancer:

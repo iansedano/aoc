@@ -1,7 +1,7 @@
-from typ import Point, Vector, Target, Report
+from pprint import pp
 
 from debug import p
-from pprint import pp
+from typ import Point, Report, Target, Vector
 
 
 def compare_pos_with_target(pos: Point, target: Target) -> Report:

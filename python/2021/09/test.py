@@ -1,8 +1,7 @@
-import depth_input
-import smoke_finder
-
 import math
 
+import depth_input
+import smoke_finder
 from debug import p
 
 SAMPLE_01 = """2199943210

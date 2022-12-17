@@ -1,7 +1,7 @@
-from pprint import pp
-from debug import p
-
 from functools import reduce
+from pprint import pp
+
+from debug import p
 
 
 def lmap(f, arr):

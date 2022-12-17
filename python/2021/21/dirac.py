@@ -1,11 +1,9 @@
-from collections import namedtuple
 import itertools
+from collections import namedtuple
 from dataclasses import dataclass
-
-
-from debug import p
 from pprint import pp
 
+from debug import p
 
 # Player = namedtuple("Player", ["score", "position"])
 

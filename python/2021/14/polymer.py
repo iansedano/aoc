@@ -1,7 +1,7 @@
 from collections import Counter
+from pprint import pp
 
 from debug import p
-from pprint import pp
 
 
 def step(chain, rules):

@@ -1,5 +1,4 @@
 import lanternfish_input
-
 import laternfish_sim
 
 SAMPLE = "3,4,3,1,2"

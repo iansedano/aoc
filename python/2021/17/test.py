@@ -1,8 +1,8 @@
-from typ import Point, Vector, Target, Report
-import probe
-
-from debug import p
 from pprint import pp
+
+import probe
+from debug import p
+from typ import Point, Report, Target, Vector
 
 sample_01: Target = Target(Point(20, -5), Point(30, -10))
 

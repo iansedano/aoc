@@ -1,5 +1,6 @@
-import snail
 import json
+
+import snail
 
 s = snail.S_num(1, 2)
 

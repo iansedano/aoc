@@ -1,5 +1,6 @@
-from aocd import get_data
 from dataclasses import dataclass, field
+
+from aocd import get_data
 
 
 @dataclass

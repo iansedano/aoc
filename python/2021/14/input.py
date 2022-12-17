@@ -1,7 +1,7 @@
 from pathlib import Path
+from pprint import pp
 
 from debug import p
-from pprint import pp
 
 
 def get_info_from_file(path=Path(Path(__file__).parent, "input.txt")):

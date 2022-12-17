@@ -1,7 +1,8 @@
-import math
 import itertools
-from aocd import get_data
+import math
 from dataclasses import dataclass
+
+from aocd import get_data
 
 SAMPLE = """R 4
 U 4

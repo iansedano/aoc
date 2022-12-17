@@ -1,7 +1,8 @@
-from debug import p
-from pprint import pp
 import heapq
 from collections import namedtuple
+from pprint import pp
+
+from debug import p
 
 Point = namedtuple("Point", ["x", "y"])
 Position = namedtuple("Position", ["cost", "point"])

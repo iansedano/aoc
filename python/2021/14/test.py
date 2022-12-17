@@ -1,10 +1,9 @@
-import input
-import polymer
 from collections import Counter
-
-from debug import p
 from pprint import pp
 
+import input
+import polymer
+from debug import p
 
 EX_01 = """NNCB
 

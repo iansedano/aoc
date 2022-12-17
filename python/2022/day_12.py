@@ -1,8 +1,8 @@
-from aocd import get_data
-from string import ascii_lowercase
-from queue import PriorityQueue
-
 from dataclasses import dataclass, field
+from queue import PriorityQueue
+from string import ascii_lowercase
+
+from aocd import get_data
 from rich.console import Console
 
 CONSOLE = Console()

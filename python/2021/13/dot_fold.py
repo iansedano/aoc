@@ -1,5 +1,6 @@
-from debug import p
 from pprint import pp
+
+from debug import p
 
 
 def fold(dots, fold):

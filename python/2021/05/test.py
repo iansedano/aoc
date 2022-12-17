@@ -1,5 +1,5 @@
-from vent_input import parse_vent_data
 import vent_mapping
+from vent_input import parse_vent_data
 
 SAMPLE_01 = """0,9 -> 5,9
 8,0 -> 0,8

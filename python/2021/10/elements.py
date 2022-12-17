@@ -1,6 +1,8 @@
-from enum import Enum
 from dataclasses import dataclass
+from enum import Enum
+
 from debug import p
+
 
 class Token_type(Enum):
     NORMAL_OPEN = "("

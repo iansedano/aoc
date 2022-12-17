@@ -1,5 +1,6 @@
-from debug import p
 from pprint import pp
+
+from debug import p
 
 
 def print_packets(packets, tab_level=0):

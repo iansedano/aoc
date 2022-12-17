@@ -1,9 +1,8 @@
-import input
-import dot_fold
-
-from debug import p
 from pprint import pp
 
+import dot_fold
+import input
+from debug import p
 
 EX_01 = """6,10
 0,14

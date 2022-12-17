@@ -1,9 +1,9 @@
-from typ import Point
-import input
-import enhance
-
-from debug import p
 from pprint import pp
+
+import enhance
+import input
+from debug import p
+from typ import Point
 
 
 def t_1():

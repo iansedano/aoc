@@ -1,6 +1,6 @@
-import cave_input
-
 from pprint import pp
+
+import cave_input
 from debug import p
 
 EX_01 = """start-A

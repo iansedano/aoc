@@ -1,10 +1,10 @@
 from __future__ import annotations
-from pathlib import Path
-from dataclasses import dataclass
 
+from dataclasses import dataclass
+from pathlib import Path
+from pprint import pp
 
 from debug import p
-from pprint import pp
 
 
 @dataclass

@@ -1,8 +1,7 @@
-import bingo_input
-import bingo
-
 from operator import itemgetter
 
+import bingo
+import bingo_input
 
 numbers, bingo_cards = itemgetter("numbers", "bingo_cards")(
     bingo_input.parse_bingo_data()

@@ -1,10 +1,10 @@
+import json
+from pprint import pp
+
+import ex
 import input
 import snail
-import ex
-import json
-
 from debug import p
-from pprint import pp
 
 
 def test_parse():

@@ -1,7 +1,8 @@
+import itertools
 import json
 from copy import deepcopy
 from functools import cmp_to_key
-import itertools
+
 from aocd import get_data
 
 SAMPLE = """[1,1,3,1,1]

@@ -1,9 +1,8 @@
 from pathlib import Path
-
-from typ import Point, Img
+from pprint import pp
 
 from debug import p
-from pprint import pp
+from typ import Img, Point
 
 
 def get_info_from_file(path=Path(Path(__file__).parent, "input.txt")):

@@ -1,10 +1,9 @@
-import input
-import bitsys
-import packets
-
-from debug import p
 from pprint import pp
 
+import bitsys
+import input
+import packets
+from debug import p
 
 EX_01 = "D2FE28"
 

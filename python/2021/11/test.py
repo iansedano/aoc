@@ -1,7 +1,7 @@
-import octopus_input
-import octopi_sim
-
 from pprint import pp
+
+import octopi_sim
+import octopus_input
 from debug import p
 
 SAMPLE_01 = """11111

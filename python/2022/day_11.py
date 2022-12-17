@@ -1,11 +1,12 @@
-from aocd import get_data
-from dataclasses import dataclass
-from typing import Callable
-from pprint import pp
-from operator import add, mul
-import itertools
 import functools
+import itertools
 import math
+from dataclasses import dataclass
+from operator import add, mul
+from pprint import pp
+from typing import Callable
+
+from aocd import get_data
 
 SAMPLE = """Monkey 0:
   Starting items: 79, 98

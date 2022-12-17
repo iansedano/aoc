@@ -1,9 +1,8 @@
-import bingo_input
-import bingo
-
 from operator import itemgetter
-
 from pprint import pp
+
+import bingo
+import bingo_input
 
 
 def test_card_builder():

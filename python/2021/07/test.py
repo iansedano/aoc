@@ -1,5 +1,5 @@
-import crab_input
 import crab_aligner
+import crab_input
 
 SAMPLE = "16,1,2,0,4,2,7,1,2,14"
 SAMPLE_2 = "0,0,0,0,1,1,1,1,4,4,4,4,5,5,5,5"

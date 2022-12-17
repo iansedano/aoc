@@ -1,10 +1,9 @@
-import input
-import risk
 from collections import Counter
-
-from debug import p
 from pprint import pp
 
+import input
+import risk
+from debug import p
 
 EX_01 = """\
 1163751742
