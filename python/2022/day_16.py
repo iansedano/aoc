@@ -1,4 +1,5 @@
 import collections
+import itertools
 from pprint import pp
 from typing import Any
 
@@ -41,6 +42,8 @@ def part1(data):
 
 def part2(data):
     """Solve part 2."""
+    return get_instructions_to_save_elephants_with_helper(data, "AA", 26)
+    # 2561 too low
 
 
 def parse(puzzle_input: str):
@@ -125,13 +128,16 @@ highest_score = 0
 def get_instructions_to_save_elephants(graph, start_key, time_left):
     def helper(path, time_left, score, valves_opened):
 
+        if time_left < 2:
+            return (score, path)
+
         potential_moves = sorted(
             find_potential_moves(graph, path[-1], time_left, valves_opened),
             key=lambda m: m[1],
             reverse=True,
         )
 
-        if not potential_moves or time_left < 0:
+        if not potential_moves:
             return (score, path)
 
         paths = []
@@ -167,7 +173,90 @@ def get_instructions_to_save_elephants(graph, start_key, time_left):
     return best_path
 
 
+NO_MOVE = (None, 0, 0)
+
+
+def get_move_combinations(pm1, pm2):
+
+    pm1 = pm1 or (NO_MOVE,)
+    pm2 = pm2 or (NO_MOVE,)
+
+    if pm1 == (NO_MOVE,) and pm2 == (NO_MOVE,):
+        return []
+
+    move_combos = [
+        (m1, m2) for m1, m2 in itertools.product(pm1, pm2) if m1[0] != m2[0]
+    ]
+
+    return sorted(
+        move_combos,
+        key=lambda mvs: mvs[0][1] + mvs[1][1],
+        reverse=True,
+    )
+
+
+def get_instructions_to_save_elephants_with_helper(graph, start_key, time_left):
+    def helper(path, time_left, score, valves_opened):
+
+        # potential moves
+        pm1 = sorted(
+            find_potential_moves(
+                graph, path[-1][0], time_left[0], valves_opened
+            ),
+            key=lambda m: m[1],
+            reverse=True,
+        )
+        pm2 = sorted(
+            find_potential_moves(
+                graph, path[-1][1], time_left[1], valves_opened
+            ),
+            key=lambda m: m[1],
+            reverse=True,
+        )
+
+        move_combinations = get_move_combinations(pm1, pm2)
+
+        if not move_combinations:
+            return (score, path)
+
+        paths = []
+        for m1, m2 in move_combinations:
+            t1, p1, c1 = m1
+            t2, p2, c2 = m2
+
+            paths.append(
+                helper(
+                    path + ((t1, t2),),
+                    (time_left[0] - c1, time_left[1] - c2),
+                    score + p1 + p2,
+                    valves_opened + (t1, t2),
+                )
+            )
+        global highest_score
+        best = sorted(paths, reverse=True)[0]
+
+        if best[0] > highest_score:
+            highest_score = best[0]
+            print(best)
+        return sorted(paths, reverse=True)[0]
+
+    valves_opened = tuple(
+        name for name, valve in graph.items() if valve["rate"] == 0
+    )
+
+    best_path = helper(
+        path=((start_key, start_key),),
+        time_left=(time_left, time_left),
+        score=0,
+        valves_opened=valves_opened,
+    )
+
+    return best_path
+
+
 def find_potential_moves(graph, start_key, time_left, valves_opened):
+    if not start_key:
+        return [NO_MOVE]
     potential_moves = []
 
     for potential_target, distance_to_target in graph[start_key][
@@ -177,9 +266,10 @@ def find_potential_moves(graph, start_key, time_left, valves_opened):
         rate = graph[potential_target]["rate"]
         time_cost = distance_to_target + 1
         potential_pressure_release = rate * (time_left - time_cost)
-        potential_moves.append(
-            (potential_target, potential_pressure_release, time_cost)
-        )
+        if potential_pressure_release > 0:
+            potential_moves.append(
+                (potential_target, potential_pressure_release, time_cost)
+            )
 
     return [move for move in potential_moves if move[0] not in valves_opened]
 
