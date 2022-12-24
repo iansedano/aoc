@@ -1,4 +1,5 @@
 import copy
+import functools
 import itertools
 import time
 from pprint import pp
@@ -29,19 +30,17 @@ def main():
     print(solution1)
     # assert part1(data) == 3068
     print("SHOULD BE 3068\n")
-    # solution2 = part2(data)
-    # print(solution2)
-
-    # # raise SystemExit()
-    # print("SHOULD BE 1514285714288\n")
+    solution2 = part2(data)
+    print(solution2)
+    print("SHOULD BE 1514285714288\n")
 
     puzzle_input = get_data(day=17, year=2022).strip()
     data = parse(puzzle_input)
     solution1 = part1(data)
     print(solution1)
     print("SHOULD BE 3065\n")
-    # solution2 = part2(data)
-    # print()
+    solution2 = part2(data)
+    print()
     return solution1, solution2
 
 
@@ -108,68 +107,89 @@ def push_rock(rock, left, max_width, cave):
             return potential_new_position
 
 
+def find_repeating_pattern(seq, start_from=0, pattern_min=2, early_exit=False):
+    """
+    >>> find_repeating_pattern([1,2,1,2,1,2,1,2,1,2])
+    2
+    >>> find_repeating_pattern([1,2,3,1,2,3,1,2,3])
+    3
+    >>> find_repeating_pattern([1,2,3,4,5,1,2,3,4,5,1,2,3,4,5])
+    5
+    """
+    seq = tuple(seq[start_from:])
+    pattern_length = -1
+    max_len = len(seq) // 2
+    for window_size in range(max_len, pattern_min - 1, -1):
+
+        chunks = [
+            seq[idx : idx + window_size]
+            for idx in range(0, len(seq), window_size)
+            if idx + window_size < len(seq) + 1
+        ]
+
+        if all(a == b for a, b in itertools.combinations(chunks, 2)):
+            if early_exit:
+                return window_size
+            pattern_length = window_size
+
+    return pattern_length
+
+
 class CycleDetector:
     def __init__(self, rock_number, total_rocks):
         self.starting_rock_number = rock_number
         self.total_rocks = total_rocks
-        self.log = []
-        self.max_height_log = []
+        self.h_log = []
+        self.dh_log = []
+        self.seq_len = -1
 
-    def input(self, rock_number, high_points, current_rock_shape):
-        fingerprint = (
-            tuple(h - max(high_points) for h in high_points)
-            + current_rock_shape
+    def input(self, rock_number, current_h):
+        if self.h_log:
+            self.dh_log.append(current_h - self.h_log[-1])
+
+        self.h_log.append(current_h)
+
+        seq_len = find_repeating_pattern(
+            self.dh_log, pattern_min=100, early_exit=True
         )
-        current_height = min(high_points)
 
-        if fingerprint in self.log:
-            return self.calculate_cycle(
-                fingerprint, rock_number, current_height
-            )
+        if seq_len != -1:
 
-        self.log.append(fingerprint)
-        self.max_height_log.append(min(high_points))
+            # print(seq_len)
+            # print(f"{rock_number - self.starting_rock_number = }")
+            h_diff = self.h_log[seq_len] - self.h_log[0]
+            # print(f"{h_diff = }")
+            return self.calculate_cycle(seq_len, h_diff)
 
         return False
 
-    def calculate_cycle(self, fingerprint, rock_number, current_height):
+    def calculate_cycle(self, seq_len, h_diff):
+        start_h = self.h_log[0]
+        rocks_left = self.total_rocks - self.starting_rock_number
+        full_cycles_left = rocks_left // seq_len
+        height_sum = full_cycles_left * h_diff
+        if rocks_left_over := rocks_left % seq_len:
 
-        cycle_start = self.log.index(fingerprint)
-        h_at_start_cycle = self.max_height_log[cycle_start]
-        cycle_period = (rock_number - self.starting_rock_number) - cycle_start
-        dh = current_height - h_at_start_cycle
-
-        print(f"{dh = } {cycle_period = }")
-
-        rocks_left = self.total_rocks - rock_number
-        full_cycles_left = rocks_left // cycle_period
-        height_sum = full_cycles_left * dh
-        if rocks_left_over := rocks_left % cycle_period:
-
-            left_over_height = (
-                self.max_height_log[rocks_left_over + cycle_start]
-                - h_at_start_cycle
-            )
+            left_over_height = self.h_log[rocks_left_over] - start_h
         else:
             left_over_height = 0
 
-        return -(current_height + height_sum + left_over_height)
+        return -(start_h + height_sum + left_over_height)
 
 
 def sim(
     cave_width, rocks: itertools.cycle, jets: itertools.cycle, number_of_rocks
 ):
     cave = set()
-    highest_points = (0,) * cave_width
-
-    cycle_detector = CycleDetector(0, number_of_rocks)
+    h_map = (0,) * cave_width
+    rocks_before_starting_seq = 1000
 
     for rock_number in range(number_of_rocks):
-        if rock_number % 10_000 == 0:
+        if rock_number % 1_000 == 0:
             print(f"{rock_number = }")
 
         rock_shape = next(rocks)
-        rock = instantiate_rock(rock_shape, min(highest_points))
+        rock = instantiate_rock(rock_shape, min(h_map))
         rock = push_rock(rock, next(jets) == "<", cave_width, cave)
 
         at_rest = False
@@ -184,25 +204,32 @@ def sim(
                 for point in rock:
                     cave.add(point)
 
-                    new_highest_points = list(highest_points)
+                    new_highest_points = list(h_map)
                     if point[1] <= new_highest_points[point[0]]:
                         new_highest_points[point[0]] = point[1] - 1
-                        highest_points = tuple(new_highest_points)
+                        h_map = tuple(new_highest_points)
 
-                if result := cycle_detector.input(
-                    rock_number, highest_points, rock_shape
-                ):
-
-                    print(f"{result = }")
-
+                if rock_number == rocks_before_starting_seq:
                     cycle_detector = CycleDetector(rock_number, number_of_rocks)
-                    cycle_detector.input(
-                        rock_number, highest_points, rock_shape
-                    )
 
-                continue
+                if rock_number >= rocks_before_starting_seq:
+                    h = min(h_map)
+                    if result := cycle_detector.input(rock_number, h):
 
-    return -min(highest_points)
+                        print(f"{result = }")
+                        return result
+
+                        cycle_detector.starting_rock_number
+                        cycle_detector.h_log[0]
+
+                        cycle_detector = CycleDetector(
+                            rock_number, number_of_rocks
+                        )
+                        cycle_detector.input(rock_number, h)
+
+                        continue
+
+    return -min(h_map)
 
 
 def viz(cave, rock):
