@@ -79,10 +79,13 @@ class Vec3D:
         return self.x == other.x and self.y == other.y and self.z == other.z
 
     def __hash__(self):
-        return hash((self.x, self.y))
+        return hash((self.x, self.y, self.z))
 
     def __str__(self):
-        return f"({self.x}, {self.y})"
+        return f"({self.x}, {self.y}, {self.z})"
 
     def __iter__(self):
         yield from (self.x, self.y, self.z)
+
+    def __getitem__(self, key):
+        return tuple(self)[key]

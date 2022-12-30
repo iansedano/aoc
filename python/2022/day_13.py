@@ -139,7 +139,6 @@ def wrap_compare(left, right):
 
 def gah_compare(left, right):
     """by @gahjelle"""
-
     if isinstance(left, int) and isinstance(right, int):
         return 1 if left < right else -1 if left > right else 0
     elif isinstance(left, int):
@@ -154,6 +153,7 @@ def gah_compare(left, right):
 
 
 def salabim_compare(left, right):
+    """by @salabim"""
     for left, right in itertools.zip_longest(left, right):
         if left is None:
             return -1
