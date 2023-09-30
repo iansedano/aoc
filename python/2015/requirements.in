@@ -1,2 +1,4 @@
 aocd
 pytest
+black
+isort

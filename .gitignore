@@ -4,7 +4,9 @@ bin
 build
 .env
 .envrc
+.psenvrc
 .env.leave
+env.ps1
 
 AocInputs
 lib

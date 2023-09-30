@@ -1,6 +1,15 @@
 {
-	"editor.formatOnSave": true,
-	"python.formatting.provider": "black",
-	"editor.insertSpaces": true,
-	"mypy.runUsingActiveInterpreter": true
+  "editor.formatOnSave": true,
+  "python.formatting.provider": "none",
+  "editor.insertSpaces": true,
+  "mypy.runUsingActiveInterpreter": true,
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  }
 }
