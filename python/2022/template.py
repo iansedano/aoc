@@ -1,5 +1,4 @@
 import sys
-
 from pprint import pp
 
 from aocd import get_data

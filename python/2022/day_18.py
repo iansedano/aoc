@@ -1,9 +1,8 @@
 import functools
 import sys
 
-from aocd import get_data
-
 from aoc_tools.vector import Vec3D as v
+from aocd import get_data
 
 DAY = 18
 SAMPLE = """2,2,2

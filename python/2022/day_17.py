@@ -5,7 +5,6 @@ import time
 from pprint import pp
 
 from aoc_tools.seq import find_pattern
-
 from aocd import get_data
 from rich.console import Console
 from rich.live import Live
