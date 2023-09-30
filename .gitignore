@@ -3,6 +3,7 @@ venv
 bin
 build
 .env
+.envrc
 .env.leave
 
 AocInputs
