@@ -13,8 +13,7 @@ def parse(puzzle_input):
 
 def part1(input):
     for i in range(1, 1000000):
-        input_str = input + str(i)
-        hash = md5(bytes(input_str, "utf-8"))
+        hash = md5(f"{input}{i}".encode("utf-8"))
 
         if hash.hexdigest()[:5] == "00000":
             return i
@@ -22,8 +21,7 @@ def part1(input):
 
 def part2(input):
     for i in range(1, 10000000):
-        input_str = input + str(i)
-        hash = md5(bytes(input_str, "utf-8"))
+        hash = md5(f"{input}{i}".encode("utf-8"))
 
         if hash.hexdigest()[:6] == "000000":
             return i
