@@ -1,6 +1,6 @@
 {
   "editor.formatOnSave": true,
-  "python.formatting.provider": "none",
+  "python.formatting.provider": "black",
   "editor.insertSpaces": true,
   "mypy.runUsingActiveInterpreter": true,
   "[python]": {

@@ -1,13 +1,9 @@
-import sys
-from textwrap import dedent
-
-from aocd import get_data
-from time_perf import time_perf
+from common import main
 
 """
 """
 
-DAY = 1
+DAY = 4
 YEAR = 2015
 SAMPLE = """
 """
@@ -17,32 +13,9 @@ def parse(puzzle_input):
 
 
 def part1(input):
-    """
-    """
+    return
 
 def part2(input):
-    """
-    """
+    return
 
-
-def main(input):
-    data, parse_time = time_perf(parse, input)
-    part_1, time_part_1 = time_perf(part1, data)
-    part_2, time_part_2 = time_perf(part2, data)
-    
-    print(dedent(f"""\
-        Parsed in {parse_time}
-        Part 1: {part_1} in {time_part_1}
-        Part 2: {part_2} in {time_part_2}
-    """))
-    
-
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        main(get_data(day=DAY, year=YEAR).strip())
-    elif sys.argv[1] == "sample":
-        main(SAMPLE)
-    elif sys.argv[1] == "input":
-        print(get_data(day=DAY, year=YEAR).strip())
-    elif sys.argv[1] == "parse":
-        print(parse(get_data(day=DAY, year=YEAR).strip()))
+main(DAY, YEAR, SAMPLE, parse, part1, part2)

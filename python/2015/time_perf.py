@@ -1,7 +1,9 @@
+import importlib
 from datetime import timedelta
 from time import perf_counter_ns
-import importlib
+
 from aocd import get_data
+
 
 def time_perf(func, arg):
     start = perf_counter_ns()
