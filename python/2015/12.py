@@ -20,24 +20,18 @@ def has_red(obj: dict):
 
 
 def get_numbers(obj, exclude_red=False):
+    if isinstance(obj, int):
+        yield obj
+    if isinstance(obj, str):
+        return
     if isinstance(obj, dict):
         if exclude_red and has_red(obj):
             return
         for item in obj.values():
-            if isinstance(item, int):
-                yield item
-            elif isinstance(item, str):
-                continue
-            else:
-                yield from get_numbers(item, exclude_red)
-    elif isinstance(obj, list):
+            yield from get_numbers(item, exclude_red)
+    if isinstance(obj, list):
         for item in obj:
-            if isinstance(item, int):
-                yield item
-            elif isinstance(item, str):
-                continue
-            else:
-                yield from get_numbers(item, exclude_red)
+            yield from get_numbers(item, exclude_red)
 
 
 def part1(input):
