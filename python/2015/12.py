@@ -1,6 +1,5 @@
 from common import main
 import json
-import pprint
 
 DAY = 12
 YEAR = 2015
