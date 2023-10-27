@@ -1,5 +1,6 @@
 import sys
 from textwrap import dedent
+from contextlib import suppress
 
 from aocd import get_data
 from time_perf import time_perf
@@ -25,6 +26,10 @@ def main(DAY, YEAR, sample, parse, part1, part2):
         # default, just solve
         run(get_data(day=DAY, year=YEAR).strip())
     elif sys.argv[1] == "sample":
+        with suppress(IndexError):
+            if sys.argv[2] == "parse":
+                print(parse(sample))
+                return
         # solve using the sample data
         run(sample)
     elif sys.argv[1] == "input":
