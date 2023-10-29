@@ -1,7 +1,8 @@
+from collections import defaultdict
+from itertools import permutations
+
 from common import main
 from parse import compile
-from itertools import permutations
-from collections import defaultdict
 
 DAY = 13
 YEAR = 2015

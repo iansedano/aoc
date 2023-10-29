@@ -1,5 +1,6 @@
-from common import main
 import re
+
+from common import main
 
 DAY = 8
 YEAR = 2015

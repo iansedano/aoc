@@ -1,5 +1,6 @@
-from common import main
 import json
+
+from common import main
 
 DAY = 12
 YEAR = 2015

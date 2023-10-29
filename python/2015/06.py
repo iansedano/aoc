@@ -1,5 +1,6 @@
-from common import main
 from collections import defaultdict
+
+from common import main
 
 DAY = 6
 YEAR = 2015

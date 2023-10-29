@@ -1,6 +1,7 @@
-from common import main
 from collections import defaultdict
 from pprint import pp
+
+from common import main
 
 DAY = 7
 YEAR = 2015

@@ -1,6 +1,5 @@
 from common import main
 
-
 DAY = 10
 YEAR = 2015
 SAMPLE = ""

@@ -1,6 +1,6 @@
 import sys
-from textwrap import dedent
 from contextlib import suppress
+from textwrap import dedent
 
 from aocd import get_data
 from time_perf import time_perf

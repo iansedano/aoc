@@ -1,5 +1,6 @@
-from common import main
 from contextlib import suppress
+
+from common import main
 
 DAY = 11
 YEAR = 2015

@@ -1,7 +1,8 @@
-from common import main
 from collections import defaultdict
 from itertools import permutations
 from pprint import pp as print
+
+from common import main
 
 DAY = 9
 YEAR = 2015

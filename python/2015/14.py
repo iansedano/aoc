@@ -1,8 +1,9 @@
+from collections import defaultdict
+from dataclasses import dataclass
+from typing import NamedTuple
+
 from common import main
 from parse import compile
-from collections import defaultdict
-from typing import NamedTuple
-from dataclasses import dataclass
 
 DAY = 14
 YEAR = 2015
