@@ -1,5 +1,5 @@
-import sys
-from contextlib import suppress
+import argparse
+from pprint import pp
 from textwrap import dedent
 
 from aocd import get_data
@@ -22,19 +22,39 @@ def main(DAY, YEAR, sample, parse, part1, part2):
             )
         )
 
-    if len(sys.argv) < 2:
-        # default, just solve
-        run(get_data(day=DAY, year=YEAR).strip())
-    elif sys.argv[1] == "sample":
-        with suppress(IndexError):
-            if sys.argv[2] == "parse":
-                print(parse(sample))
-                return
-        # solve using the sample data
-        run(sample)
-    elif sys.argv[1] == "input":
-        # just output the input data
-        print(get_data(day=DAY, year=YEAR).strip())
-    elif sys.argv[1] == "parse":
-        # just parse and output the parsed data
-        print(parse(get_data(day=DAY, year=YEAR).strip()))
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "-d", "--data", default="main", required=False, choices=["main", "sample"]
+    )
+    parser.add_argument(
+        "-a",
+        "--action",
+        default="solve",
+        required=False,
+        choices=["solve", "parse", "input"],
+    )
+    parser.add_argument(
+        "-p", "--pretty-print", required=False, default=False, action="store_true"
+    )
+
+    args = parser.parse_args()
+
+    if args.pretty_print:
+        _print = pp
+    else:
+        _print = print
+
+    match [args.data, args.action]:
+        case ["main", "solve"]:
+            run(get_data(day=DAY, year=YEAR).strip())
+        case ["main", "parse"]:
+            _print(parse(get_data(day=DAY, year=YEAR).strip()))
+        case ["main", "input"]:
+            _print(get_data(day=DAY, year=YEAR).strip())
+        case ["sample", "solve"]:
+            run(sample)
+        case ["sample", "parse"]:
+            _print(parse(sample))
+        case ["sample", "input"]:
+            _print(sample)
