@@ -2,7 +2,7 @@ from common import main
 
 DAY = 4
 YEAR = 2015
-SAMPLE = ""
+SAMPLE = """"""
 
 
 def parse(puzzle_input):
