@@ -9,12 +9,13 @@ def parse(puzzle_input):
     return puzzle_input
 
 
-def part1(input):
+def part1(parsed_input):
     return
 
 
-def part2(input):
+def part2(parsed_input):
     return
 
 
-main(DAY, YEAR, SAMPLE, parse, part1, part2)
+if __name__ == "__main__":
+    main(DAY, YEAR, SAMPLE, parse, part1, part2)
