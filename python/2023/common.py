@@ -9,23 +9,20 @@ from time_perf import time_perf
 def main(DAY, YEAR, sample, parse, part1, part2):
     def run(input):
         data, parse_time = time_perf(parse, input)
+        print(f"Parsed in {parse_time}")
         part_1, time_part_1 = time_perf(part1, data)
+        print(f"Part 1: {part_1} in {time_part_1}")
         part_2, time_part_2 = time_perf(part2, data)
-
-        print(
-            dedent(
-                f"""\
-            Parsed in {parse_time}
-            Part 1: {part_1} in {time_part_1}
-            Part 2: {part_2} in {time_part_2}
-        """
-            )
-        )
+        print(f"Part 2: {part_2} in {time_part_2}")
 
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        "-d", "--data", default="main", required=False, choices=["main", "sample"]
+        "-d",
+        "--data",
+        default="main",
+        required=False,
+        choices=["main", "sample"],
     )
     parser.add_argument(
         "-a",
@@ -35,7 +32,11 @@ def main(DAY, YEAR, sample, parse, part1, part2):
         choices=["solve", "parse", "input"],
     )
     parser.add_argument(
-        "-p", "--pretty-print", required=False, default=False, action="store_true"
+        "-p",
+        "--pretty-print",
+        required=False,
+        default=False,
+        action="store_true",
     )
 
     args = parser.parse_args()
