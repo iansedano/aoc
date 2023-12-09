@@ -60,7 +60,7 @@ def part2(parsed_input):
 
 
 def sort_hand_types(hand):
-    h, bid = hand
+    h, _ = hand
     h_c = Counter(h)
     counts = sorted(h_c.values(), reverse=True)
     if counts[0] == 5:  # five of kind
@@ -79,7 +79,7 @@ def sort_hand_types(hand):
 
 
 def sort_hand_types_wildcard(hand):
-    h, bid = hand
+    h, _ = hand
     h_c = Counter(h)
     wildcards = h_c[1]
     h_c = Counter(filter(lambda c: c != 1, h))
