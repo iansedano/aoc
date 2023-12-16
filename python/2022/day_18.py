@@ -1,7 +1,7 @@
 import functools
 import sys
 
-from aoc_tools.vector import Vec3D as v
+from aoc_tools.vector import Vec3 as v
 from aocd import get_data
 
 DAY = 18
