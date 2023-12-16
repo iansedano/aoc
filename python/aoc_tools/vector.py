@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
-class Vec2D:
+class Vec2:
     x: int
     y: int
 
@@ -14,15 +14,15 @@ class Vec2D:
         if type(other) == tuple:
             if len(other) != 2:
                 raise TypeError
-            return Vec2D(self.x + other[0], self.y + other[1])
-        return Vec2D(self.x + other.x, self.y + other.y)
+            return Vec2(self.x + other[0], self.y + other[1])
+        return Vec2(self.x + other.x, self.y + other.y)
 
     def __sub__(self, other):
         if type(other) == tuple:
             if len(other) != 2:
                 raise TypeError
-            return Vec2D(self.x - other[0], self.y - other[1])
-        return Vec2D(self.x - other.x, self.y - other.y)
+            return Vec2(self.x - other[0], self.y - other[1])
+        return Vec2(self.x - other.x, self.y - other.y)
 
     def __eq__(self, other):
         if type(other) == tuple:
@@ -42,7 +42,7 @@ class Vec2D:
 
 
 @dataclass(frozen=True)
-class Vec3D:
+class Vec3:
     x: int
     y: int
     z: int
@@ -55,19 +55,15 @@ class Vec3D:
         if type(other) == tuple:
             if len(other) != 3:
                 raise TypeError
-            return Vec3D(
-                self.x + other[0], self.y + other[1], self.z + other[2]
-            )
-        return Vec3D(self.x + other.x, self.y + other.y)
+            return Vec3(self.x + other[0], self.y + other[1], self.z + other[2])
+        return Vec3(self.x + other.x, self.y + other.y)
 
     def __sub__(self, other):
         if type(other) == tuple:
             if len(other) != 3:
                 raise TypeError
-            return Vec3D(
-                self.x - other[0], self.y - other[1], self.z - other[2]
-            )
-        return Vec3D(self.x - other.x, self.y - other.y)
+            return Vec3(self.x - other[0], self.y - other[1], self.z - other[2])
+        return Vec3(self.x - other.x, self.y - other.y)
 
     def __eq__(self, other):
         if type(other) == tuple:
