@@ -3,6 +3,12 @@
   "python.formatting.provider": "black",
   "editor.insertSpaces": true,
   "mypy.runUsingActiveInterpreter": true,
+  "[c]": {
+    "editor.wordBasedSuggestions": false,
+    "editor.suggest.insertMode": "replace",
+    "editor.semanticHighlighting.enabled": true,
+    "editor.defaultFormatter": "xaver.clang-format"
+  },
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter"
   },
