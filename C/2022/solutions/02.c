@@ -1,3 +1,7 @@
+/**
+ * https://adventofcode.com/2022/day/2
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 
