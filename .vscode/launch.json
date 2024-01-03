@@ -19,6 +19,23 @@
         "function": "hide",
         "special": "hide"
       }
+    },
+    {
+      "name": "Python: Current File AOC Sample",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "variablePresentation": {
+        "all": "inline",
+        "class": "group",
+        "function": "hide",
+        "special": "hide"
+      },
+      "args": [
+        "-d",
+        "sample"
+      ]
     }
   ]
 }
