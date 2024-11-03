@@ -7,6 +7,10 @@ build
 .psenvrc
 .env.leave
 env.ps1
+*.in
+*.out
+*.o
 
 AocInputs
 lib
+out

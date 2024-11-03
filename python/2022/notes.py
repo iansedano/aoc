@@ -96,11 +96,8 @@ def rock_paper_scissors_p1(f):
 
         ans += b + 1
 
-        match (b - a) % 3:
-            case 1:
-                ans += 6
-            case 0:
-                ans += 3
+        match (b - a + 3) % 3:
+            ...
 
     return ans
 
