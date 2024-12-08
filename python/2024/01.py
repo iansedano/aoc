@@ -6,14 +6,14 @@ from aocd import get_data
 DAY = 1
 YEAR = 2024
 SAMPLE = dedent(
-    """
+    """\
     3   4
     4   3
     2   5
     1   3
     3   9
     3   3
-    """.strip()
+    """
 )
 
 

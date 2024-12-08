@@ -1,3 +1,5 @@
 aocd
 pytest
 ipython
+numpy
+parse
