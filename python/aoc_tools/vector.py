@@ -11,21 +11,21 @@ class Vec2:
         return cls(vec.x, vec.y)
 
     def __add__(self, other):
-        if type(other) == tuple:
+        if isinstance(other, tuple):
             if len(other) != 2:
                 raise TypeError
             return Vec2(self.x + other[0], self.y + other[1])
         return Vec2(self.x + other.x, self.y + other.y)
 
     def __sub__(self, other):
-        if type(other) == tuple:
+        if isinstance(other, tuple):
             if len(other) != 2:
                 raise TypeError
             return Vec2(self.x - other[0], self.y - other[1])
         return Vec2(self.x - other.x, self.y - other.y)
 
     def __eq__(self, other):
-        if type(other) == tuple:
+        if isinstance(other, tuple):
             if len(other) != 2:
                 raise TypeError
             return self.x == other[0] and self.y == other[1]
