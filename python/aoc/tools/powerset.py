@@ -34,6 +34,3 @@ def power_set(input: Iterable):
         if len(input) != 0
         else [[]]
     )
-
-
-p = powerset(list(range(20)))
