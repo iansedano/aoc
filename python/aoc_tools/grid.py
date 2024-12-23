@@ -40,3 +40,15 @@ def create_grid_dict_from_string(
                         chars[char].add(Vec2(x, y))
 
     return grid if not collect_chars else grid, chars
+
+
+def print_points(points, x_range, y_range):
+    if not isinstance(points, set):
+        points = set(points)
+    for y in range(*y_range):
+        for x in range(*x_range):
+            if (x, y) in points:
+                print("#", end="")
+            else:
+                print(".", end="")
+        print("")

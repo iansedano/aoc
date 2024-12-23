@@ -154,7 +154,8 @@ def build_perimeter(points):
 def get_region_price_discounted(points: Iterable):
     # peek(points)
     perimeter = build_perimeter(points)
-    # peek(perimeter)
+    peek(perimeter)
+    print_points({p[0] for p in perimeter}, (-1, 6), (-1, 6))
 
     corners = 0
     queue = set(perimeter)
@@ -231,83 +232,6 @@ def get_region_price_discounted(points: Iterable):
     corners = 4 if corners == 3 else corners
     return corners * len(points)
 
-    # horizontal_lines = defaultdict(set)
-    # vertical_lines = defaultdict(set)
-
-    # for x, y in perimeter:
-    #     horizontal_lines[y].add(x)
-    #     vertical_lines[x].add(y)
-
-    # lines = 0
-
-    # horizontal_lines = {
-    #     y: group_contiguous(positions)
-    #     for y, positions in sorted(horizontal_lines.items())
-    # }
-
-    # vertical_lines = {
-    #     x: group_contiguous(positions)
-    #     for x, positions in sorted(vertical_lines.items())
-    # }
-
-    # peek(horizontal_lines)
-
-    # processed = set()
-
-    # for y, groups in horizontal_lines.items():
-    #     peek(y)
-    #     for group in groups:
-    #         peek(group)
-    #         if len(group) == 1:
-    #             print("single")
-    #             peek(vertical_lines[group[0]])
-    #             if (
-    #                 not any(
-    #                     y in v_group
-    #                     for v_group in vertical_lines[group[0]]
-    #                     if len(v_group) > 1
-    #                 )
-    #                 and (group[0], y) not in processed
-    #             ):
-    #                 print("not in any group, single line wall")
-
-    #                 lines += 1
-    #             else:
-    #                 print("part of other wall")
-    #         elif len(group) > 1:
-    #             lines += 1
-
-    #         for item in group:
-    #             processed.add((item, y))
-    #     peek(lines)
-
-    # peek(vertical_lines)
-
-    # for x, groups in vertical_lines.items():
-    #     for group in groups:
-    #         if len(group) == 1:
-    #             if (
-    #                 not any(
-    #                     x in h_group
-    #                     for h_group in horizontal_lines[group[0]]
-    #                     if len(h_group) > 1
-    #                 )
-    #                 and (x, group[0]) not in processed
-    #             ):
-    #                 print("not in any group, single line wall")
-    #                 lines += 1
-    #             else:
-    #                 print("part of other wall")
-    #         elif len(group) > 1:
-    #             lines += 1
-
-    #         for item in group:
-    #             processed.add((x, item))
-    #     peek(lines)
-
-    # peek(lines)
-    # return lines * len(points)
-
 
 def group_contiguous(nums):
     positions = list(sorted(nums))
@@ -367,8 +291,20 @@ def get_cardinals_d(pos):
     ]
 
 
+def print_points(points, x_range, y_range):
+    if not isinstance(points, set):
+        points = set(points)
+    for y in range(*y_range):
+        for x in range(*x_range):
+            if (x, y) in points:
+                print("#", end="")
+            else:
+                print(".", end="")
+        print("")
+
+
 if __name__ == "__main__":
     data = get_data(day=DAY, year=YEAR).strip()
-    parsed = parse(data)
+    parsed = parse(SAMPLE)
     print(f"Part 1: {part_1(parsed)}")
     print(f"Part 2: {part_2(parsed)}")

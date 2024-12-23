@@ -3,3 +3,5 @@ pytest
 ipython
 numpy
 parse
+sympy
+peek-python
