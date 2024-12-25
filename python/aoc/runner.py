@@ -51,13 +51,29 @@ def main():
         _print(f"Part 2: {part_2} in {time_part_2}")
 
     elif args.action == "test":
-        for data, expected_1, expected_2 in solution_module.examples:
+        for i, (data, expected_1, expected_2) in enumerate(
+            solution_module.examples, 1
+        ):
+            print(f"{"=" * 20} Test {i} {"=" * 20}")
+            print(data)
             parsed_data, parse_time = time_perf(solution_module.parse, data)
+            _print(f"Parsed in {parse_time}")
             part_1, time_part_1 = time_perf(solution_module.part_1, parsed_data)
+            if part_1 == expected_1:
+                print(f"Part 1: ✅")
+            else:
+                print(f"Part 1: ❌")
+                print(f"Expected: {expected_1}")
+                print(f"Got: {part_1}")
+
             part_2, time_part_2 = time_perf(solution_module.part_2, parsed_data)
-            assert part_1 == expected_1
-            assert part_2 == expected_2
-            print(f"Test passed for {parsed_data}")
+
+            if part_2 == expected_2:
+                print(f"Part 2: ✅")
+            else:
+                print(f"Part 2: ❌")
+                print(f"Expected: {expected_2}")
+                print(f"Got: {part_2}")
 
 
 def get_args():
