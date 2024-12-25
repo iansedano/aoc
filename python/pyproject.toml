@@ -1,2 +1,18 @@
+[project]
+name = "aoc"
+version = "2024.1"
+dependencies = [
+  "aocd",
+  "pytest",
+  "ipython",
+  "numpy",
+  "parse",
+  "sympy",
+  "peek-python",
+]
+
+[project.scripts]
+aoc = "aoc.runner:main"
+
 [tool.black]
-  line-length=80
+line-length = 80

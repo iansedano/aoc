@@ -1,0 +1,47 @@
+from textwrap import dedent
+
+examples = [
+    (
+        dedent(
+            """\
+            RRRRIICCFF
+            RRRRIICCCF
+            VVRRRCCFFF
+            VVRCCCJFFF
+            VVVVCJJCFE
+            VVIVCCJJEE
+            VVIIICJJEE
+            MIIIIIJJEE
+            MIIISIJEEE
+            MMMISSJEEE
+            """
+        ),
+        1930,
+        1260,
+    ),
+    (
+        dedent(
+            """\
+            OOOOO
+            OXOXO
+            OOOOO
+            OXOXO
+            OOOOO
+            """
+        ),
+        772,
+        None,
+    ),
+    (
+        dedent(
+            """\
+            AAAA
+            BBCD
+            BBCC
+            EEEC
+            """
+        ),
+        140,
+        80,
+    ),
+]

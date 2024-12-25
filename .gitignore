@@ -9,6 +9,7 @@ build
 env.ps1
 *.out
 *.o
+*.egg-info
 
 AocInputs
 lib
