@@ -1,11 +1,10 @@
 import itertools
-from collections import defaultdict, deque
+from collections import deque
 from collections.abc import Iterable
-from textwrap import dedent
 
 import peek
+from aoc.tools.grid import get_cardinals, print_points
 from aocd import get_data
-from aoc.tools.grid import print_points
 
 
 def parse(puzzle_input):
@@ -29,7 +28,7 @@ def parse(puzzle_input):
 
         while points_to_examine:
             current = points_to_examine.popleft()
-            for cardinal in get_cardinals(current, shape):
+            for cardinal in get_cardinals(current, *shape):
                 if grid[cardinal] == char and cardinal not in new_region[1]:
                     new_region[1].add(cardinal)
                     points_to_examine.append(cardinal)
@@ -146,7 +145,8 @@ def get_region_price_discounted(points: Iterable):
             continue
 
         print("something went wrong")
-        raise SystemExit
+        break
+        # raise SystemExit
     peek(corners, len(points))
     corners = 4 if corners == 3 else corners
     return corners * len(points)
@@ -177,30 +177,6 @@ def group_contiguous(nums):
             idx += 1
 
     return groups
-
-
-def get_cardinals(pos, shape, exclude=None):
-    if exclude is None:
-        exclude = {}
-    transforms = [(0, -1), (1, 0), (0, 1), (-1, 0)]
-    out = []
-
-    for t in transforms:
-        new_pos = (pos[0] + t[0], pos[1] + t[1])
-        if (
-            0 <= new_pos[0] < shape[0]
-            and 0 <= new_pos[1] < shape[1]
-            and new_pos not in exclude
-        ):
-            out.append(new_pos)
-    return out
-
-
-def get_cardinals(pos):
-    return [
-        (pos[0] + t[0], pos[1] + t[1])
-        for t in [(0, -1), (1, 0), (0, 1), (-1, 0)]
-    ]
 
 
 def get_cardinals_d(pos):

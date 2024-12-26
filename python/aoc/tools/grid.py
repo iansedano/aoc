@@ -1,7 +1,8 @@
 from collections import defaultdict
+from typing import Union
 
-from aoc.tools.vector import Vec2
 from aoc.tools.neighbors import CARDINALS, ORDINALS
+from aoc.tools.vector import Vec2
 
 
 class Grid2D:
@@ -52,8 +53,34 @@ def print_points(points, x_range, y_range):
         print("")
 
 
-def get_cardinals(pos):
-    return [(pos[0] + t[0], pos[1] + t[1]) for t in CARDINALS]
+def get_cardinals(
+    pos, limit_x: Union[int, tuple] = None, limit_y: Union[tuple | int] = None
+):
+    """limit args can be either a tuple or an int. If an int is passed, it will be converted to a tuple (0, int)
+    If None is passed, it will be converted to (-inf, inf)
+    limits act like ranges where the first element is inclusive and the second is exclusive
+    """
+    if limit_x is None:
+        limit_x = (float("-inf"), float("inf"))
+    if limit_y is None:
+        limit_y = (float("-inf"), float("inf"))
+
+    if isinstance(limit_x, int):
+        limit_x = (0, limit_x)
+    if isinstance(limit_y, int):
+        limit_y = (0, limit_y)
+
+    if not isinstance(limit_x, tuple) or len(limit_x) != 2:
+        raise ValueError("Invalid limit_x")
+    if not isinstance(limit_y, tuple) or len(limit_y) != 2:
+        raise ValueError("Invalid limit_y")
+
+    return [
+        (pos[0] + t[0], pos[1] + t[1])
+        for t in CARDINALS
+        if limit_x[0] <= pos[0] + t[0] < limit_x[1]
+        and limit_y[0] <= pos[1] + t[1] < limit_y[1]
+    ]
 
 
 def get_cardinals_with_directions(pos):

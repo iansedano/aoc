@@ -12,12 +12,6 @@
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter"
   },
-  "github.copilot.enable": {
-    "*": false,
-    "plaintext": false,
-    "markdown": false,
-    "scminput": false
-  },
   "cSpell.words": [
     "aocd",
     "trailhead",
