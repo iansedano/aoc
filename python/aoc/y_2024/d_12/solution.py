@@ -5,15 +5,18 @@ from textwrap import dedent
 
 import peek
 from aocd import get_data
+from aoc.tools.grid import print_points
 
 
 def parse(puzzle_input):
-    grid = {}
     lines = puzzle_input.splitlines()
     shape = (len(lines[0]), len(lines))
-    for y, line in enumerate(puzzle_input.splitlines()):
-        for x, char in enumerate(line):
-            grid[x, y] = char
+
+    grid = {
+        (x, y): char
+        for y, line in enumerate(lines)
+        for x, char in enumerate(line)
+    }
 
     regions = []
 
@@ -54,9 +57,7 @@ def part_2(parsed_input):
 
 def get_region_price(points: Iterable):
     return len(points) * sum(
-        cardinal not in points
-        for p in points
-        for cardinal in get_cardinals_s(p)
+        cardinal not in points for p in points for cardinal in get_cardinals(p)
     )
 
 
@@ -195,7 +196,7 @@ def get_cardinals(pos, shape, exclude=None):
     return out
 
 
-def get_cardinals_s(pos):
+def get_cardinals(pos):
     return [
         (pos[0] + t[0], pos[1] + t[1])
         for t in [(0, -1), (1, 0), (0, 1), (-1, 0)]
@@ -209,21 +210,11 @@ def get_cardinals_d(pos):
     ]
 
 
-def print_points(points, x_range, y_range):
-    if not isinstance(points, set):
-        points = set(points)
-    for y in range(*y_range):
-        for x in range(*x_range):
-            if (x, y) in points:
-                print("#", end="")
-            else:
-                print(".", end="")
-        print("")
-
-
 if __name__ == "__main__":
     package_parts = __package__.split(".")
-    year, day = package_parts[-2].strip("y_"), package_parts[-1].strip("d_")
+    year, day = int(package_parts[-2].strip("y_")), int(
+        package_parts[-1].strip("d_")
+    )
     data = get_data(day=day, year=year).strip()
     parsed = parse(data)
     print(f"Part 1: {part_1(parsed)}")
