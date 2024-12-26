@@ -1,9 +1,7 @@
 from collections import defaultdict
 
-from aoc_tools.vector import Vec2
-
-cardinals_4 = ((), (), (), ())
-cardinals_8 = ((), (), (), ())
+from aoc.tools.vector import Vec2
+from aoc.tools.neighbors import CARDINALS, ORDINALS
 
 
 class Grid2D:
@@ -52,3 +50,19 @@ def print_points(points, x_range, y_range):
             else:
                 print(".", end="")
         print("")
+
+
+def get_cardinals(pos):
+    return [(pos[0] + t[0], pos[1] + t[1]) for t in CARDINALS]
+
+
+def get_cardinals_with_directions(pos):
+    return [((pos[0] + t[0], pos[1] + t[1]), t) for t in CARDINALS]
+
+
+def get_ordinals(pos):
+    return [(pos[0] + t[0], pos[1] + t[1]) for t in ORDINALS]
+
+
+def get_ordinals_with_directions(pos):
+    return [((pos[0] + t[0], pos[1] + t[1]), t) for t in ORDINALS]
