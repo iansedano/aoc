@@ -1,9 +1,12 @@
 import argparse
+import builtins
+from contextlib import contextmanager
 from importlib import import_module
 from pprint import pp
 
-from aocd import get_data
+import peek
 from aoc.tools.time_perf import time_perf
+from aocd import get_data
 
 
 def main():
@@ -25,15 +28,38 @@ def main():
         data = solution_module.examples[args.example - 1][0]
 
     if args.action == "solve":
-        parsed_data, parse_time = time_perf(solution_module.parse, data)
+        if not args.debug:
+            with suppress_print():
+                parsed_data, parse_time = time_perf(solution_module.parse, data)
+        else:
+            parsed_data, parse_time = time_perf(solution_module.parse, data)
+
         _print(f"Parsed in {parse_time}")
-        part_1, time_part_1 = time_perf(solution_module.part_1, parsed_data)
+
+        if not args.debug:
+            with suppress_print():
+                part_1, time_part_1 = time_perf(
+                    solution_module.part_1, parsed_data
+                )
+        else:
+            part_1, time_part_1 = time_perf(solution_module.part_1, parsed_data)
         _print(f"Part 1: {part_1} in {time_part_1}")
-        part_2, time_part_2 = time_perf(solution_module.part_2, parsed_data)
+
+        if not args.debug:
+            with suppress_print():
+                part_2, time_part_2 = time_perf(
+                    solution_module.part_2, parsed_data
+                )
+        else:
+            part_2, time_part_2 = time_perf(solution_module.part_2, parsed_data)
         _print(f"Part 2: {part_2} in {time_part_2}")
 
     elif args.action == "parse":
-        parsed_data, parse_time = time_perf(solution_module.parse, data)
+        if not args.debug:
+            with suppress_print():
+                parsed_data, parse_time = time_perf(solution_module.parse, data)
+        else:
+            parsed_data, parse_time = time_perf(solution_module.parse, data)
         _print(parsed_data)
         _print(f"Parsed in {parse_time}")
 
@@ -41,12 +67,20 @@ def main():
         _print(data)
 
     elif args.action == "part1":
-        parsed_data, parse_time = time_perf(solution_module.parse, data)
+        if not args.debug:
+            with suppress_print():
+                parsed_data, parse_time = time_perf(solution_module.parse, data)
+        else:
+            parsed_data, parse_time = time_perf(solution_module.parse, data)
         part_1, time_part_1 = time_perf(solution_module.part_1, parsed_data)
         _print(f"Part 1: {part_1} in {time_part_1}")
 
     elif args.action == "part2":
-        parsed_data, parse_time = time_perf(solution_module.parse, data)
+        if not args.debug:
+            with suppress_print():
+                parsed_data, parse_time = time_perf(solution_module.parse, data)
+        else:
+            parsed_data, parse_time = time_perf(solution_module.parse, data)
         part_2, time_part_2 = time_perf(solution_module.part_2, parsed_data)
         _print(f"Part 2: {part_2} in {time_part_2}")
 
@@ -56,22 +90,47 @@ def main():
         ):
             print(f"{"=" * 20} Test {i} {"=" * 20}")
             print(data)
-            parsed_data, parse_time = time_perf(solution_module.parse, data)
-            _print(f"Parsed in {parse_time}")
-            part_1, time_part_1 = time_perf(solution_module.part_1, parsed_data)
-            if part_1 == expected_1:
-                print(f"Part 1: ✅")
+
+            if not args.debug:
+                with suppress_print():
+                    parsed_data, parse_time = time_perf(
+                        solution_module.parse, data
+                    )
             else:
-                print(f"Part 1: ❌")
+                parsed_data, parse_time = time_perf(solution_module.parse, data)
+            _print(f"Parsed in {parse_time}")
+
+            if not args.debug:
+                with suppress_print():
+                    part_1, time_part_1 = time_perf(
+                        solution_module.part_1, parsed_data
+                    )
+            else:
+                part_1, time_part_1 = time_perf(
+                    solution_module.part_1, parsed_data
+                )
+
+            if part_1 == expected_1:
+                print(f"Part 1: ✅ in {time_part_1}")
+            else:
+                print("Part 1: ❌ in {time_part_1}")
                 print(f"Expected: {expected_1}")
                 print(f"Got: {part_1}")
 
-            part_2, time_part_2 = time_perf(solution_module.part_2, parsed_data)
+            if not args.debug:
+                with suppress_print():
+                    part_2, time_part_2 = time_perf(
+                        solution_module.part_2, parsed_data
+                    )
+            else:
+                part_2, time_part_2 = time_perf(
+                    solution_module.part_2, parsed_data
+                )
 
             if part_2 == expected_2:
-                print(f"Part 2: ✅")
+                print("Part 2: ✅")
             else:
-                print(f"Part 2: ❌")
+                print("Part 2: ❌")
                 print(f"Expected: {expected_2}")
                 print(f"Got: {part_2}")
 
@@ -114,7 +173,26 @@ def get_args():
         action="store_true",
     )
 
+    parser.add_argument(
+        "--debug",
+        required=False,
+        default=False,
+        action="store_true",
+    )
+
     return parser.parse_args()
+
+
+@contextmanager
+def suppress_print():
+    original_print = builtins.print
+    try:
+        builtins.print = lambda *args, **kwargs: None  # Override with no-op
+        peek.enabled = False
+        yield
+    finally:
+        builtins.print = original_print  # Restore original print
+        peek.enabled = True
 
 
 if __name__ == "__main__":
