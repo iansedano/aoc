@@ -28,38 +28,22 @@ def main():
         data = solution_module.examples[args.example - 1][0]
 
     if args.action == "solve":
-        if not args.debug:
-            with suppress_print():
-                parsed_data, parse_time = time_perf(solution_module.parse, data)
-        else:
-            parsed_data, parse_time = time_perf(solution_module.parse, data)
+        parsed_data, parse_time = run(solution_module.parse, data, args.debug)
 
         _print(f"Parsed in {parse_time}")
 
-        if not args.debug:
-            with suppress_print():
-                part_1, time_part_1 = time_perf(
-                    solution_module.part_1, parsed_data
-                )
-        else:
-            part_1, time_part_1 = time_perf(solution_module.part_1, parsed_data)
+        part_1, time_part_1 = run(
+            solution_module.part_1, parsed_data, args.debug
+        )
         _print(f"Part 1: {part_1} in {time_part_1}")
 
-        if not args.debug:
-            with suppress_print():
-                part_2, time_part_2 = time_perf(
-                    solution_module.part_2, parsed_data
-                )
-        else:
-            part_2, time_part_2 = time_perf(solution_module.part_2, parsed_data)
+        part_2, time_part_2 = run(
+            solution_module.part_2, parsed_data, args.debug
+        )
         _print(f"Part 2: {part_2} in {time_part_2}")
 
     elif args.action == "parse":
-        if not args.debug:
-            with suppress_print():
-                parsed_data, parse_time = time_perf(solution_module.parse, data)
-        else:
-            parsed_data, parse_time = time_perf(solution_module.parse, data)
+        parsed_data, parse_time = run(solution_module.parse, data, args.debug)
         _print(parsed_data)
         _print(f"Parsed in {parse_time}")
 
@@ -67,21 +51,17 @@ def main():
         _print(data)
 
     elif args.action == "part1":
-        if not args.debug:
-            with suppress_print():
-                parsed_data, parse_time = time_perf(solution_module.parse, data)
-        else:
-            parsed_data, parse_time = time_perf(solution_module.parse, data)
-        part_1, time_part_1 = time_perf(solution_module.part_1, parsed_data)
+        parsed_data, parse_time = run(solution_module.parse, data, args.debug)
+        part_1, time_part_1 = run(
+            solution_module.part_1, parsed_data, args.debug
+        )
         _print(f"Part 1: {part_1} in {time_part_1}")
 
     elif args.action == "part2":
-        if not args.debug:
-            with suppress_print():
-                parsed_data, parse_time = time_perf(solution_module.parse, data)
-        else:
-            parsed_data, parse_time = time_perf(solution_module.parse, data)
-        part_2, time_part_2 = time_perf(solution_module.part_2, parsed_data)
+        parsed_data, parse_time = run(solution_module.parse, data, args.debug)
+        part_2, time_part_2 = run(
+            solution_module.part_2, parsed_data, args.debug
+        )
         _print(f"Part 2: {part_2} in {time_part_2}")
 
     elif args.action == "test":
@@ -91,24 +71,14 @@ def main():
             print(f"{"=" * 20} Test {i} {"=" * 20}")
             print(data)
 
-            if not args.debug:
-                with suppress_print():
-                    parsed_data, parse_time = time_perf(
-                        solution_module.parse, data
-                    )
-            else:
-                parsed_data, parse_time = time_perf(solution_module.parse, data)
+            parsed_data, parse_time = run(
+                solution_module.parse, data, args.debug
+            )
             _print(f"Parsed in {parse_time}")
 
-            if not args.debug:
-                with suppress_print():
-                    part_1, time_part_1 = time_perf(
-                        solution_module.part_1, parsed_data
-                    )
-            else:
-                part_1, time_part_1 = time_perf(
-                    solution_module.part_1, parsed_data
-                )
+            part_1, time_part_1 = run(
+                solution_module.part_1, parsed_data, args.debug
+            )
 
             if part_1 == expected_1:
                 print(f"Part 1: ✅ in {time_part_1}")
@@ -116,17 +86,9 @@ def main():
                 print("Part 1: ❌ in {time_part_1}")
                 print(f"Expected: {expected_1}")
                 print(f"Got: {part_1}")
-
-            if not args.debug:
-                with suppress_print():
-                    part_2, time_part_2 = time_perf(
-                        solution_module.part_2, parsed_data
-                    )
-            else:
-                part_2, time_part_2 = time_perf(
-                    solution_module.part_2, parsed_data
-                )
-
+            part_2, time_part_2 = run(
+                solution_module.part_2, parsed_data, args.debug
+            )
             if part_2 == expected_2:
                 print("Part 2: ✅")
             else:
@@ -193,6 +155,14 @@ def suppress_print():
     finally:
         builtins.print = original_print  # Restore original print
         peek.enabled = True
+
+
+def run(func, data, debug=False):
+    if not debug:
+        with suppress_print():
+            return time_perf(func, data)
+    else:
+        return time_perf(func, data)
 
 
 if __name__ == "__main__":
