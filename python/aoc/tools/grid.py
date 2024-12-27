@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Union
+from typing import Iterable, Union
 
 from aoc.tools.neighbors import CARDINALS, ORDINALS
 from aoc.tools.vector import Vec2
@@ -41,16 +41,62 @@ def create_grid_dict_from_string(
     return grid if not collect_chars else grid, chars
 
 
-def print_points(points, x_range, y_range):
-    if not isinstance(points, set):
+def print_points(
+    points: Iterable,
+    *,
+    x_range: Union[tuple, int] = None,
+    y_range: Union[tuple, int] = None,
+    auto_detect=False,
+    show_count=False,
+):
+    if auto_detect and (x_range is not None or y_range is not None):
+        raise ValueError(
+            "auto_detect and x_range/y_range are mutually exclusive"
+        )
+
+    if auto_detect:
+        x_range = (min(p[0] for p in points), max(p[0] for p in points) + 1)
+        y_range = (min(p[1] for p in points), max(p[1] for p in points) + 1)
+
+    if isinstance(x_range, int):
+        x_range = (0, x_range)
+    if isinstance(y_range, int):
+        y_range = (0, y_range)
+
+    if not isinstance(x_range, tuple) or len(x_range) != 2:
+        raise ValueError("Invalid x_range")
+    if not isinstance(y_range, tuple) or len(y_range) != 2:
+        raise ValueError("Invalid y_range")
+
+    if x_range[0] > x_range[1] or y_range[0] > y_range[1]:
+        raise ValueError("Invalid range")
+
+    if not show_count:
         points = set(points)
-    for y in range(*y_range):
-        for x in range(*x_range):
-            if (x, y) in points:
-                print("#", end="")
-            else:
-                print(".", end="")
-        print("")
+        for y in range(*y_range):
+            for x in range(*x_range):
+                if (x, y) in points:
+                    print("#", end="")
+                else:
+                    print(".", end="")
+            print("")
+    if show_count:
+        points = {}
+        for p in points:
+            points[p] = points.get(p, 0) + 1
+
+        for y in range(*y_range):
+            for x in range(*x_range):
+                value = points.get((x, y), 0)
+                if value > 9:
+                    print("+", end="")
+                elif value < 0:
+                    print("-", end="")
+                elif value == 0:
+                    print(".", end="")
+                else:
+                    print(value, end="")
+            print("")
 
 
 def get_cardinals(
