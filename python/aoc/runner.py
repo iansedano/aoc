@@ -83,16 +83,16 @@ def main():
             if part_1 == expected_1:
                 print(f"Part 1: ✅ in {time_part_1}")
             else:
-                print("Part 1: ❌ in {time_part_1}")
+                print(f"Part 1: ❌ in {time_part_1}")
                 print(f"Expected: {expected_1}")
                 print(f"Got: {part_1}")
             part_2, time_part_2 = run(
                 solution_module.part_2, parsed_data, args.debug
             )
             if part_2 == expected_2:
-                print("Part 2: ✅")
+                print(f"Part 2: ✅ in {time_part_2}")
             else:
-                print("Part 2: ❌")
+                print(f"Part 2: ❌ in {time_part_2}")
                 print(f"Expected: {expected_2}")
                 print(f"Got: {part_2}")
 
@@ -153,7 +153,7 @@ def suppress_print():
         peek.enabled = False
         yield
     finally:
-        builtins.print = original_print  # Restore original print
+        builtins.print = original_print
         peek.enabled = True
 
 
