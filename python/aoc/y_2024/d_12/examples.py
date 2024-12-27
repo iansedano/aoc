@@ -44,4 +44,31 @@ examples = [
         140,
         80,
     ),
+    (
+        dedent(
+            """\
+            EEEEE
+            EXXXX
+            EEEEE
+            EXXXX
+            EEEEE
+            """
+        ),
+        692,
+        236,
+    ),
+    (
+        dedent(
+            """\
+            AAAAAA
+            AAABBA
+            AAABBA
+            ABBAAA
+            ABBAAA
+            AAAAAA
+            """
+        ),
+        1184,
+        368,
+    ),
 ]
