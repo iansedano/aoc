@@ -70,113 +70,23 @@ def build_perimeter(points):
 
 
 def get_region_price_discounted(points: Iterable):
-    # peek(points)
-    perimeter = build_perimeter(points)
-    peek(perimeter)
-    print_points({p[0] for p in perimeter}, (-1, 6), (-1, 6))
-
-    corners = 0
-    queue = set(perimeter)
-    point, dir = queue.pop()
+    boundary_points = {
+        point
+        for point in points
+        if any(c not in points for c in get_cardinals(point))
+    }
+    peek(boundary_points)
+    print_points(boundary_points, (-1, 7), (-1, 7))
+    queue = set(boundary_points)
+    boundary = []
+    current = queue.pop()
 
     while queue:
-        peek(point, dir)
+        neighbor = next(c for c in get_cardinals(current) if c in queue)
+        boundary.append((current, neighbor))
+        current = queue.remove(neighbor)
 
-        possible_corners, straight = None, None
-
-        if dir == "S" or dir == "N":
-
-            possible_corners = [
-                ((x + point[0], y + point[1]), dir)
-                for x, y, dir in [
-                    *itertools.product((1, -1), (1, -1), ("E", "W")),
-                    (0, 0, "E"),
-                    (0, 0, "W"),
-                ]
-            ]
-
-            straight = [
-                ((x + point[0], y + point[1]), dir)
-                for x, y, dir in itertools.product((1, -1), (0,), (dir,))
-            ]
-
-        if dir == "W" or dir == "E":
-
-            possible_corners = [
-                ((x + point[0], y + point[1]), dir)
-                for x, y, dir in [
-                    *itertools.product((1, -1), (1, -1), ("N", "S")),
-                    (0, 0, "N"),
-                    (0, 0, "S"),
-                ]
-            ]
-
-            straight = [
-                ((x + point[0], y + point[1]), dir)
-                for x, y, dir in itertools.product((0,), (1, -1), (dir,))
-            ]
-
-        # peek(possible_corners, straight)
-
-        found = False
-
-        for pc in possible_corners:
-
-            if pc in queue:
-                # print(pc, "in queue")
-                corners += 1
-                point, dir = pc
-                queue.remove(pc)
-                found = True
-                break
-
-        if found:
-            continue
-
-        for s in straight:
-            if s in queue:
-                # print(s, "in queue")
-                point, dir = s
-                queue.remove(s)
-                found = True
-                break
-
-        if found:
-            continue
-
-        print("something went wrong")
-        break
-        # raise SystemExit
-    peek(corners, len(points))
-    corners = 4 if corners == 3 else corners
-    return corners * len(points)
-
-
-def group_contiguous(nums):
-    positions = list(sorted(nums))
-
-    idx = 0
-
-    groups = [[positions[idx]]]
-
-    idx = 1
-    group_idx = 0
-
-    while True:
-        try:
-            positions[idx]
-        except IndexError:
-            break
-
-        if positions[idx - 1] + 1 == positions[idx]:
-            groups[group_idx].append(positions[idx])
-            idx += 1
-        else:
-            groups.append([positions[idx]])
-            group_idx += 1
-            idx += 1
-
-    return groups
+    peek(boundary)
 
 
 def get_cardinals_d(pos):
