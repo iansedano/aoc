@@ -3,7 +3,8 @@ from collections import deque
 from collections.abc import Iterable
 
 import peek
-from aoc.tools.grid import get_cardinals, print_points
+from aoc.tools.grid import get_cardinals, get_edges, print_points
+from aoc.tools.vector import add_tuple
 from aocd import get_data
 
 
@@ -60,33 +61,60 @@ def get_region_price(points: Iterable):
     )
 
 
-def build_perimeter(points):
-    return {
-        (cardinal, dir)
-        for p in points
-        for cardinal, dir in get_cardinals_d(p)
-        if cardinal not in points
-    }
-
-
 def get_region_price_discounted(points: Iterable):
-    boundary_points = {
-        point
-        for point in points
-        if any(c not in points for c in get_cardinals(point))
-    }
-    peek(boundary_points)
-    print_points(boundary_points, (-1, 7), (-1, 7))
-    queue = set(boundary_points)
-    boundary = []
+    edges = list(get_edges(points))
+
+    possible_corners_n = ((1, -1), (1, 0), (0, -1), (0, 0))
+    possible_straight_n = ((-1, 0), (1, 0))
+    possible_corners_w = ((0, 0), (0, 1), (-1, 0), (-1, 1))
+    possible_straight_w = ((0, -1), (0, 1))
+
+    queue = set(edges)
     current = queue.pop()
+    corners = 0
 
     while queue:
-        neighbor = next(c for c in get_cardinals(current) if c in queue)
-        boundary.append((current, neighbor))
-        current = queue.remove(neighbor)
+        possible_corners = (
+            possible_corners_n if current[1] == "N" else possible_corners_w
+        )
+        corner_dir = "W" if current[1] == "N" else "N"
 
-    peek(boundary)
+        corner = next(
+            (
+                pc
+                for c in possible_corners
+                if (pc := (add_tuple(c, current[0]), corner_dir)) in queue
+            ),
+            None,
+        )
+        if corner is not None:
+            corners = corners + 1
+            current = corner
+            queue.remove(corner)
+            continue
+
+        possible_straight = (
+            possible_straight_n if current[1] == "N" else possible_straight_w
+        )
+        straight_dir = "N" if current[1] == "N" else "W"
+
+        straight = next(
+            (
+                ps
+                for s in possible_straight
+                if (ps := (add_tuple(s, current[0]), straight_dir)) in queue
+            ),
+            None,
+        )
+
+        if straight is not None:
+            current = straight
+            queue.remove(straight)
+            continue
+
+        current = queue.pop()
+
+    return corners
 
 
 def get_cardinals_d(pos):

@@ -1,8 +1,8 @@
 from collections import defaultdict
 from typing import Iterable, Union
 
-from aoc.tools.neighbors import CARDINALS, ORDINALS
-from aoc.tools.vector import Vec2
+from aoc.tools.neighbors import CARDINALS, EAST, NORTH, ORDINALS, SOUTH, WEST
+from aoc.tools.vector import Vec2, add_tuple
 
 
 class Grid2D:
@@ -127,6 +127,23 @@ def get_cardinals(
         if limit_x[0] <= pos[0] + t[0] < limit_x[1]
         and limit_y[0] <= pos[1] + t[1] < limit_y[1]
     ]
+
+
+def get_edges(points):
+    for point in points:
+        north = add_tuple(point, NORTH)
+        south = add_tuple(point, SOUTH)
+        east = add_tuple(point, EAST)
+        west = add_tuple(point, WEST)
+
+        if north not in points:
+            yield point, "N"
+        if south not in points:
+            yield south, "N"
+        if east not in points:
+            yield east, "W"
+        if west not in points:
+            yield point, "W"
 
 
 def get_cardinals_with_directions(pos):

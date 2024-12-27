@@ -9,6 +9,7 @@ dependencies = [
   "parse",
   "sympy",
   "peek-python",
+  "drawille",
 ]
 
 [project.scripts]

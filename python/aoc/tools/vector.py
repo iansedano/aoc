@@ -85,3 +85,19 @@ class Vec3:
 
     def __getitem__(self, key):
         return tuple(self)[key]
+
+
+def add_tuple(a, b):
+    return tuple(x + y for x, y in zip(a, b))
+
+
+def sub_tuple(a, b):
+    return tuple(x - y for x, y in zip(a, b))
+
+
+def mul_tuple(a, b):
+    return tuple(x * y for x, y in zip(a, b))
+
+
+def div_tuple(a, b):
+    return tuple(x / y for x, y in zip(a, b))
