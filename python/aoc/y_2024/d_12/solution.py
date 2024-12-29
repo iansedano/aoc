@@ -1,9 +1,7 @@
-import itertools
 from collections import deque
 from collections.abc import Iterable
 
-import peek
-from aoc.tools.grid import get_cardinals, get_edges, print_points
+from aoc.tools.grid import get_cardinals, get_edges
 from aoc.tools.vector import add_tuple
 from aocd import get_data
 
@@ -44,15 +42,7 @@ def part_1(parsed_input):
 
 
 def part_2(parsed_input):
-    sum = 0
-    for char, field in parsed_input:
-        print("")
-        print(f"====== {char} =======\n")
-        result = get_region_price_discounted(field)
-        peek(result)
-        sum += result
-    return sum
-    # return sum(get_region_price_discounted(field) for _, field in parsed_input)
+    return sum(get_region_price_discounted(field) for _, field in parsed_input)
 
 
 def get_region_price(points: Iterable):
@@ -62,66 +52,62 @@ def get_region_price(points: Iterable):
 
 
 def get_region_price_discounted(points: Iterable):
+    return count_corners(points) * len(points)
+
+
+def count_corners(points):
     edges = list(get_edges(points))
-
-    possible_corners_n = ((1, -1), (1, 0), (0, -1), (0, 0))
-    possible_straight_n = ((-1, 0), (1, 0))
-    possible_corners_w = ((0, 0), (0, 1), (-1, 0), (-1, 1))
-    possible_straight_w = ((0, -1), (0, 1))
-
     queue = set(edges)
-    current = queue.pop()
-    corners = 0
+    current = next(iter(queue))
+    corner_count = 0
+    direction = "W" if current[1] == "N" else "N"
+
+    # point, edge, new direction
+    possible_corners = {
+        "N": (((0, 0), "N", "E"), ((-1, 0), "N", "W")),
+        "S": (((0, 1), "N", "E"), ((-1, 1), "N", "W")),
+        "E": (((1, 0), "W", "S"), ((1, -1), "W", "N")),
+        "W": (((0, 0), "W", "S"), ((0, -1), "W", "N")),
+    }
+
+    possible_straight = {
+        "N": ((0, -1), "W"),
+        "S": ((0, 1), "W"),
+        "E": ((1, 0), "N"),
+        "W": ((-1, 0), "N"),
+    }
 
     while queue:
-        possible_corners = (
-            possible_corners_n if current[1] == "N" else possible_corners_w
-        )
-        corner_dir = "W" if current[1] == "N" else "N"
+        next_possible_corners = possible_corners[direction]
 
-        corner = next(
-            (
-                pc
-                for c in possible_corners
-                if (pc := (add_tuple(c, current[0]), corner_dir)) in queue
-            ),
-            None,
-        )
-        if corner is not None:
-            corners = corners + 1
-            current = corner
-            queue.remove(corner)
+        found_corner = False
+        for point, edge, new_direction in next_possible_corners:
+            new_edge = (add_tuple(point, current[0]), edge)
+            if new_edge in queue:
+                corner_count = corner_count + 1
+                current = new_edge
+                queue.remove(new_edge)
+                direction = new_direction
+                found_corner = True
+                break
+
+        if found_corner:
             continue
 
-        possible_straight = (
-            possible_straight_n if current[1] == "N" else possible_straight_w
-        )
-        straight_dir = "N" if current[1] == "N" else "W"
-
-        straight = next(
-            (
-                ps
-                for s in possible_straight
-                if (ps := (add_tuple(s, current[0]), straight_dir)) in queue
-            ),
-            None,
-        )
-
-        if straight is not None:
-            current = straight
-            queue.remove(straight)
+        next_straight = possible_straight[direction]
+        if (
+            ns := (add_tuple(next_straight[0], current[0]), next_straight[1])
+        ) in queue:
+            current = ns
+            queue.remove(ns)
             continue
 
-        current = queue.pop()
+        queue.discard(current)
+        if queue:
+            current = next(iter(queue))
+            direction = "W" if current[1] == "N" else "N"
 
-    return corners
-
-
-def get_cardinals_d(pos):
-    return [
-        ((pos[0] + t[0][0], pos[1] + t[0][1]), t[1])
-        for t in [((0, -1), "N"), ((1, 0), "E"), ((0, 1), "S"), ((-1, 0), "W")]
-    ]
+    return corner_count
 
 
 if __name__ == "__main__":

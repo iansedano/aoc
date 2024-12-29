@@ -42,7 +42,7 @@ def create_grid_dict_from_string(
 
 
 def print_points(
-    points: Iterable,
+    points: Union[Iterable, tuple],
     *,
     x_range: Union[tuple, int] = None,
     y_range: Union[tuple, int] = None,
@@ -70,6 +70,9 @@ def print_points(
 
     if x_range[0] > x_range[1] or y_range[0] > y_range[1]:
         raise ValueError("Invalid range")
+
+    if isinstance(points, tuple):
+        points = [points]
 
     if not show_count:
         points = set(points)
