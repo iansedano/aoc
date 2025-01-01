@@ -42,13 +42,64 @@ def create_grid_dict_from_string(
 
 
 def print_points(
-    points: Union[Iterable, tuple],
+    points: Union[Iterable, tuple, dict],
+    **kwargs
+):
+    if isinstance(points, tuple) or isinstance(points, list) or isinstance(points, set):
+        _print_points_iterable(points, **kwargs)
+        return
+
+    if isinstance(points, dict):
+        _print_points_dict(points, **kwargs)
+
+def _print_points_dict(
+    points: dict,
     *,
-    x_range: Union[tuple, int] = None,
-    y_range: Union[tuple, int] = None,
+    x_range: Union[tuple, int, None] = None,
+    y_range: Union[tuple, int, None] = None,
     auto_detect=False,
     show_count=False,
-):
+    ):
+    
+    if auto_detect and (x_range is not None or y_range is not None):
+        raise ValueError(
+            "auto_detect and x_range/y_range are mutually exclusive"
+        )
+
+    if auto_detect:
+        values = list(points.values())
+        x_range = (min(p[0] for p in values), max(p[0] for p in values) + 1)
+        y_range = (min(p[1] for p in values), max(p[1] for p in values) + 1)
+
+    if isinstance(x_range, int):
+        x_range = (0, x_range)
+    if isinstance(y_range, int):
+        y_range = (0, y_range)
+
+    if not isinstance(x_range, tuple) or len(x_range) != 2:
+        raise ValueError("Invalid x_range")
+    if not isinstance(y_range, tuple) or len(y_range) != 2:
+        raise ValueError("Invalid y_range")
+
+    if x_range[0] > x_range[1] or y_range[0] > y_range[1]:
+        raise ValueError("Invalid range")
+
+    for y in range(*y_range):
+        for x in range(*x_range):
+            print(points.get((x, y), "."))
+        print("")
+
+
+
+def _print_points_iterable(
+    points: Union[Iterable, tuple, dict],
+    *,
+    x_range: Union[tuple, int, None] = None,
+    y_range: Union[tuple, int, None] = None,
+    auto_detect=False,
+    show_count=False,
+    ):
+    
     if auto_detect and (x_range is not None or y_range is not None):
         raise ValueError(
             "auto_detect and x_range/y_range are mutually exclusive"

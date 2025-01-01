@@ -1,10 +1,6 @@
 import itertools
-from collections import defaultdict
-from textwrap import dedent
 
-import peek
-from aocd import get_data
-
+from aoc.tools.peek import peek
 
 DIRS = {
     "^": (0, -1),
@@ -16,7 +12,7 @@ DIRS = {
 
 def parse(puzzle_input):
     warehouse, steps = puzzle_input.split("\n\n")
-    warehouse_lines = warehouse.splitlines()[1:-1]
+    warehouse_lines = warehouse.splitlines()
     steps = list(itertools.chain.from_iterable(steps.splitlines()))
 
     return (
@@ -35,7 +31,7 @@ def part_1(parsed_input):
     boxes = set()
 
     for y, row in list(enumerate(warehouse_lines)):
-        for x, cell in list(enumerate(row[1:-1])):
+        for x, cell in list(enumerate(row)):
             if cell == "@":
                 position = (x, y)
                 continue
@@ -45,13 +41,12 @@ def part_1(parsed_input):
                     walls.add((x, y))
                 elif cell == "O":
                     boxes.add((x, y))
-
+    peek(walls)
     character = position
 
     for step in steps:
-        peek.enabled = False
+        peek.enabled = True
         peek("===NEW STEP===")
-
         peek(character, step)
         direction = DIRS[step]
         next_character_pos = add_tuple(character, direction)
@@ -60,8 +55,6 @@ def part_1(parsed_input):
         while True:
             if (
                 next_stack_pos in walls
-                or not (0 <= next_stack_pos[0] < shape[0])
-                or not (0 <= next_stack_pos[1] < shape[1])
             ):
                 stack.append(("#", next_stack_pos))
                 break
@@ -75,7 +68,7 @@ def part_1(parsed_input):
             next_stack_pos = add_tuple(next_stack_pos, direction)
         peek(stack)
 
-        # debug(shape, walls, boxes, character)
+        debug_a(shape, walls, boxes, character)
 
         if stack[-1][0] == ".":
             character = next_character_pos
@@ -98,22 +91,13 @@ def add_tuple(a, b):
 def part_2(parsed_input):
     peek.enabled = True
     warehouse_lines, steps = parsed_input
-
-    warehouse_lines = [
-        line[1:-1]
-        .replace("#", "##")
-        .replace(".", "..")
-        .replace("@", "@.")
-        .replace("O", "[]")
-        for line in warehouse_lines
-    ]
-
+    warehouse_lines = expand_warehouse(warehouse_lines)
     position = None
     shape = (len(warehouse_lines[0]), len(warehouse_lines))
 
     walls = set()
     boxes = set()
-
+    return
     for y, row in list(enumerate(warehouse_lines)):
         for x, cell in list(enumerate(row)):
             if cell == "@":
@@ -184,6 +168,17 @@ def part_2(parsed_input):
     return sum(box[0] + 1 + (box[1] + 1) * 100 for box in boxes)
 
 
+def expand_warehouse(lines):
+    return [
+        line[1:-1]
+        .replace("#", "##")
+        .replace(".", "..")
+        .replace("@", "@.")
+        .replace("O", "[]")
+        for line in lines
+    ]
+
+
 def debug_a(shape, walls, boxes, position):
     for y in range(-1, shape[1] + 1, 1):
         for x in range(-1, shape[0] + 1, 1):
@@ -224,4 +219,3 @@ if __name__ == "__main__":
     data = get_data(day=DAY, year=YEAR).strip()
     parsed = parse(SAMPLE)
     print(f"Part 1: {part_1(parsed)}")
-    print(f"Part 2: {part_2(parsed)}")
