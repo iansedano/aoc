@@ -17,9 +17,7 @@ class Grid2D:
                     cls.grid[Vec2(x, y)] = char
 
 
-def create_grid_dict_from_string(
-    input, ignore=None, use_tuples=False
-):
+def create_grid_dict_from_string(input, ignore=None, use_tuples=False):
     ignore = set() if ignore is None else ignore
     grid = {}
 
@@ -33,11 +31,13 @@ def create_grid_dict_from_string(
 
     return grid
 
-def print_points(
-    points: Union[Iterable, tuple, dict],
-    **kwargs
-):
-    if isinstance(points, tuple) or isinstance(points, list) or isinstance(points, set):
+
+def print_points(points: Union[Iterable, tuple, dict], **kwargs):
+    if (
+        isinstance(points, tuple)
+        or isinstance(points, list)
+        or isinstance(points, set)
+    ):
         _print_points_iterable(points, **kwargs)
         return
 
@@ -45,14 +45,15 @@ def print_points(
         _print_points_dict(points, **kwargs)
         return
 
+
 def _print_points_dict(
     points: dict,
     *,
     x_range: Union[tuple, int, None] = None,
     y_range: Union[tuple, int, None] = None,
     auto_detect=False,
-    ):
-    
+):
+
     if auto_detect and (x_range is not None or y_range is not None):
         raise ValueError(
             "auto_detect and x_range/y_range are mutually exclusive"
@@ -82,7 +83,6 @@ def _print_points_dict(
         print("")
 
 
-
 def _print_points_iterable(
     points: Union[Iterable, tuple, dict],
     *,
@@ -90,8 +90,8 @@ def _print_points_iterable(
     y_range: Union[tuple, int, None] = None,
     auto_detect=False,
     show_count=False,
-    ):
-    
+):
+
     if auto_detect and (x_range is not None or y_range is not None):
         raise ValueError(
             "auto_detect and x_range/y_range are mutually exclusive"

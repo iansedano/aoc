@@ -126,7 +126,6 @@ def part_2(parsed_input):
         peek(direction)
         boxes_to_move = get_boxes_part_2(character, dir, boxes, walls)
         peek(boxes_to_move)
-        peek(character, direction)
         if (
             all(p + dir not in walls for box in boxes_to_move for p in box)
             and character + dir not in walls
