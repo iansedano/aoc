@@ -18,28 +18,20 @@ class Grid2D:
 
 
 def create_grid_dict_from_string(
-    input, ignore=None, use_tuples=False, collect_chars=False
+    input, ignore=None, use_tuples=False
 ):
     ignore = set() if ignore is None else ignore
     grid = {}
-
-    if collect_chars:
-        chars = defaultdict(set)
 
     for y, line in enumerate(input.splitlines()):
         for x, char in enumerate(line):
             if char not in ignore:
                 if use_tuples:
                     grid[(x, y)] = char
-                    if collect_chars:
-                        chars[char].add((x, y))
                 else:
                     grid[Vec2(x, y)] = char
-                    if collect_chars:
-                        chars[char].add(Vec2(x, y))
 
-    return grid if not collect_chars else grid, chars
-
+    return grid
 
 def print_points(
     points: Union[Iterable, tuple, dict],
@@ -51,6 +43,7 @@ def print_points(
 
     if isinstance(points, dict):
         _print_points_dict(points, **kwargs)
+        return
 
 def _print_points_dict(
     points: dict,
@@ -58,7 +51,6 @@ def _print_points_dict(
     x_range: Union[tuple, int, None] = None,
     y_range: Union[tuple, int, None] = None,
     auto_detect=False,
-    show_count=False,
     ):
     
     if auto_detect and (x_range is not None or y_range is not None):
@@ -67,7 +59,7 @@ def _print_points_dict(
         )
 
     if auto_detect:
-        values = list(points.values())
+        values = list(points.keys())
         x_range = (min(p[0] for p in values), max(p[0] for p in values) + 1)
         y_range = (min(p[1] for p in values), max(p[1] for p in values) + 1)
 
@@ -86,7 +78,7 @@ def _print_points_dict(
 
     for y in range(*y_range):
         for x in range(*x_range):
-            print(points.get((x, y), "."))
+            print(points.get((x, y), "."), end="")
         print("")
 
 

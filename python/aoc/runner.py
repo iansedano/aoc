@@ -32,14 +32,10 @@ def main():
 
         _print(f"Parsed in {parse_time}")
 
-        part_1, time_part_1 = run(
-            solution_module.part_1, parsed_data, args.debug
-        )
+        part_1, time_part_1 = run(solution_module.part_1, parsed_data, args.debug)
         _print(f"Part 1: {part_1} in {time_part_1}")
 
-        part_2, time_part_2 = run(
-            solution_module.part_2, parsed_data, args.debug
-        )
+        part_2, time_part_2 = run(solution_module.part_2, parsed_data, args.debug)
         _print(f"Part 2: {part_2} in {time_part_2}")
 
     elif args.action == "parse":
@@ -52,49 +48,48 @@ def main():
 
     elif args.action == "part1":
         parsed_data, parse_time = run(solution_module.parse, data, args.debug)
-        part_1, time_part_1 = run(
-            solution_module.part_1, parsed_data, args.debug
-        )
+        part_1, time_part_1 = run(solution_module.part_1, parsed_data, args.debug)
         _print(f"Part 1: {part_1} in {time_part_1}")
 
     elif args.action == "part2":
         parsed_data, parse_time = run(solution_module.parse, data, args.debug)
-        part_2, time_part_2 = run(
-            solution_module.part_2, parsed_data, args.debug
-        )
+        part_2, time_part_2 = run(solution_module.part_2, parsed_data, args.debug)
         _print(f"Part 2: {part_2} in {time_part_2}")
 
     elif args.action == "test":
-        for i, (data, expected_1, expected_2) in enumerate(
-            solution_module.examples, 1
-        ):
+        for i, (data, expected_1, expected_2) in enumerate(solution_module.examples, 1):
             print(f"{"=" * 20} Test {i} {"=" * 20}")
             print(data)
 
-            parsed_data, parse_time = run(
-                solution_module.parse, data, args.debug
-            )
+            parsed_data, parse_time = run(solution_module.parse, data, args.debug)
             _print(f"Parsed in {parse_time}")
 
-            part_1, time_part_1 = run(
-                solution_module.part_1, parsed_data, args.debug
-            )
+            try:
+                part_1, time_part_1 = run(
+                    solution_module.part_1, parsed_data, args.debug
+                )
 
-            if part_1 == expected_1:
-                print(f"Part 1: ✅ in {time_part_1}")
-            else:
-                print(f"Part 1: ❌ in {time_part_1}")
-                print(f"Expected: {expected_1}")
-                print(f"Got: {part_1}")
-            part_2, time_part_2 = run(
-                solution_module.part_2, parsed_data, args.debug
-            )
-            if part_2 == expected_2:
-                print(f"Part 2: ✅ in {time_part_2}")
-            else:
-                print(f"Part 2: ❌ in {time_part_2}")
-                print(f"Expected: {expected_2}")
-                print(f"Got: {part_2}")
+                if part_1 == expected_1:
+                    print(f"Part 1: ✅ in {time_part_1}")
+                else:
+                    print(f"Part 1: ❌ in {time_part_1}")
+                    print(f"Expected: {expected_1}")
+                    print(f"Got: {part_1}")
+            except Exception:
+                print("Part 1 failed")
+
+            try:
+                part_2, time_part_2 = run(
+                    solution_module.part_2, parsed_data, args.debug
+                )
+                if part_2 == expected_2:
+                    print(f"Part 2: ✅ in {time_part_2}")
+                else:
+                    print(f"Part 2: ❌ in {time_part_2}")
+                    print(f"Expected: {expected_2}")
+                    print(f"Got: {part_2}")
+            except Exception:
+                print("Part 2 failed")
 
 
 def get_args():

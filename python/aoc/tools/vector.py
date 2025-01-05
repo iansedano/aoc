@@ -10,6 +10,10 @@ class Vec2:
     def from_vec(cls, vec):
         return cls(vec.x, vec.y)
 
+    @classmethod
+    def from_tuple(cls, tup):
+        return cls(tup[0], tup[1])
+
     def __add__(self, other):
         if isinstance(other, tuple):
             if len(other) != 2:
@@ -40,6 +44,16 @@ class Vec2:
     def __iter__(self):
         yield from (self.x, self.y)
 
+    def __getitem__(self, key):
+        if key == 0:
+            return self.x
+        if key == 1:
+            return self.y
+        if key == "x":
+            return self.x
+        if key == "y":
+            return self.y
+
 
 @dataclass(frozen=True)
 class Vec3:
@@ -52,26 +66,24 @@ class Vec3:
         return cls(vec.x, vec.y, vec.z)
 
     def __add__(self, other):
-        if type(other) == tuple:
+        if type(other) is tuple:
             if len(other) != 3:
                 raise TypeError
             return Vec3(self.x + other[0], self.y + other[1], self.z + other[2])
-        return Vec3(self.x + other.x, self.y + other.y)
+        return Vec3(self.x + other.x, self.y + other.y, self.z + other.z)
 
     def __sub__(self, other):
-        if type(other) == tuple:
+        if type(other) is tuple:
             if len(other) != 3:
                 raise TypeError
             return Vec3(self.x - other[0], self.y - other[1], self.z - other[2])
         return Vec3(self.x - other.x, self.y - other.y)
 
     def __eq__(self, other):
-        if type(other) == tuple:
+        if type(other) is tuple:
             if len(other) != 3:
                 raise TypeError
-            return (
-                self.x == other[0] and self.y == other[1] and self.z == other[2]
-            )
+            return self.x == other[0] and self.y == other[1] and self.z == other[2]
         return self.x == other.x and self.y == other.y and self.z == other.z
 
     def __hash__(self):

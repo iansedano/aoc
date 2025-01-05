@@ -1,87 +1,113 @@
 import itertools
 
 from aoc.tools.peek import peek
+from aoc.tools.grid import create_grid_dict_from_string
+from aoc.tools.vector import Vec2
 
 DIRS = {
-    "^": (0, -1),
-    ">": (1, 0),
-    "v": (0, 1),
-    "<": (-1, 0),
+    "^": Vec2(0, -1),
+    ">": Vec2(1, 0),
+    "v": Vec2(0, 1),
+    "<": Vec2(-1, 0),
 }
 
 
 def parse(puzzle_input):
     warehouse, steps = puzzle_input.split("\n\n")
-    warehouse_lines = warehouse.splitlines()
     steps = list(itertools.chain.from_iterable(steps.splitlines()))
+    return warehouse, steps
 
-    return (
-        warehouse_lines,
-        steps,
+
+def parse_part_1(warehouse_lines):
+    grid = create_grid_dict_from_string(warehouse_lines)
+    walls, boxes, character = set(), set(), None
+    for pos, char in grid.items():
+        if char == "#":
+            walls.add(pos)
+        elif char == "O":
+            boxes.add(pos)
+        elif char == "@":
+            character = pos
+
+    return walls, boxes, character
+
+
+def parse_part_2(warehouse_lines):
+    grid = create_grid_dict_from_string(warehouse_lines, ignore={"."})
+    walls, boxes, character = set(), set(), None
+    for pos, char in grid.items():
+        if char == "#":
+            walls.add(pos)
+        elif char == "[":
+            boxes.add((pos, pos + (1, 0)))
+        elif char == "@":
+            character = pos
+
+    return walls, boxes, character
+
+
+def get_boxes_part_1(position, direction, boxes, walls):
+    new_position = add_tuple(position, direction)
+    if position in boxes:
+        return [position, *get_boxes_part_1(new_position, direction, boxes, walls)]
+    if position in walls:
+        return ["#"]
+    return ["."]
+
+
+def get_boxes_part_2(position, direction, boxes, walls):
+    new_position = position + direction
+    peek(new_position)
+    if direction.y == 0:
+        if box := next((box for box in boxes if new_position in box), None):
+            peek(box)
+            return {
+                box,
+                *get_boxes_part_2(new_position + direction, direction, boxes, walls),
+            }
+        return set()
+    next_box = next((box for box in boxes if new_position in box), None)
+    if next_box:
+        return {
+            next_box,
+            *{
+                box
+                for pos in next_box
+                for box in get_boxes_part_2(pos, direction, boxes, walls)
+            },
+        }
+    return set()
+
+
+def move_boxes_part_1(
+    character,
+    direction,
+    boxes,
+    walls,
+):
+    next_character_position = add_tuple(character, direction)
+    box_row = get_boxes_part_1(next_character_position, direction, boxes, walls)
+    peek(box_row)
+    if box_row[-1] == "#":
+        return character, boxes
+    return add_tuple(character, direction), (
+        (boxes - set(box_row[:-1])) | {add_tuple(b, direction) for b in box_row[:-1]}
     )
 
 
 def part_1(parsed_input):
     warehouse_lines, steps = parsed_input
-
-    grid = {}
-    position = None
-    shape = (len(warehouse_lines), len(warehouse_lines[0][1:-1]))
-    walls = set()
-    boxes = set()
-
-    for y, row in list(enumerate(warehouse_lines)):
-        for x, cell in list(enumerate(row)):
-            if cell == "@":
-                position = (x, y)
-                continue
-            if cell != ".":
-                grid[(x, y)] = cell
-                if cell == "#":
-                    walls.add((x, y))
-                elif cell == "O":
-                    boxes.add((x, y))
-    peek(walls)
-    character = position
-
+    walls, boxes, character = parse_part_1(warehouse_lines)
     for step in steps:
-        peek.enabled = True
-        peek("===NEW STEP===")
-        peek(character, step)
-        direction = DIRS[step]
-        next_character_pos = add_tuple(character, direction)
-        stack = []
-        next_stack_pos = next_character_pos
-        while True:
-            if (
-                next_stack_pos in walls
-            ):
-                stack.append(("#", next_stack_pos))
-                break
-
-            if next_stack_pos not in boxes:
-                stack.append((".", next_stack_pos))
-                break
-            else:
-                stack.append(("O", next_stack_pos))
-
-            next_stack_pos = add_tuple(next_stack_pos, direction)
-        peek(stack)
-
-        debug_a(shape, walls, boxes, character)
-
-        if stack[-1][0] == ".":
-            character = next_character_pos
-            new_box_positions = set()
-
-            for char, box_pos in stack[:-1]:
-                if char != "O":
-                    raise SystemExit("Something went wrong")
-                new_box_positions.add(add_tuple(box_pos, direction))
-
-            boxes = (boxes - {b[1] for b in stack}) | new_box_positions
-
-    return sum(box[0] + 1 + (box[1] + 1) * 100 for box in boxes)
+        peek(step, character)
+        debug_a((9, 9), walls, boxes, character)
+        character, boxes = move_boxes_part_1(
+            character,
+            DIRS[step],
+            boxes,
+            walls,
+        )
+    return sum(box[0] + box[1] * 100 for box in boxes)
 
 
 def add_tuple(a, b):
@@ -92,99 +118,41 @@ def part_2(parsed_input):
     peek.enabled = True
     warehouse_lines, steps = parsed_input
     warehouse_lines = expand_warehouse(warehouse_lines)
-    position = None
-    shape = (len(warehouse_lines[0]), len(warehouse_lines))
-
-    walls = set()
-    boxes = set()
-    return
-    for y, row in list(enumerate(warehouse_lines)):
-        for x, cell in list(enumerate(row)):
-            if cell == "@":
-                position = (x, y)
-                continue
-            if cell != ".":
-                if cell == "#":
-                    walls.add((x, y))
-                elif cell == "[":
-                    boxes.add(((x, y), (x + 1, y)))
-
-    character = position
-
-    for step in steps:
-
-        peek.enabled = True
-        peek("===NEW STEP===")
-        debug_b(shape, walls, boxes, character)
-        peek(character, step)
-
-        direction = DIRS[step]
-        next_character_pos = add_tuple(character, direction)
-        stack = []
-        leading_edge = (next_character_pos,)
-
-        peek(leading_edge)
-
-        while True:
-            if (
-                any(pos in walls for pos in leading_edge)
-                or not any(0 <= pos[0] < shape[0] for pos in leading_edge)
-                or not any(0 <= pos[1] < shape[1] for pos in leading_edge)
-            ):
-                stack.append(("#", leading_edge))
-                break
-
-            boxes_hit = set()
-
-            for box in boxes:
-                if any(pos in box for pos in leading_edge):
-                    boxes_hit.add(box)
-
-            peek(boxes_hit)
-
-            if any(
-                pos not in itertools.chain.from_iterable(boxes)
-                for pos in leading_edge
-            ):
-                stack.append((".", leading_edge))
-                break
-            else:
-                stack.append(("O", leading_edge))
-            peek(stack)
-
-            # next_stack_pos = add_tuple(next_stack_pos, direction)
-
-        if stack[-1][0] == ".":
-            character = next_character_pos
-            new_box_positions = set()
-
-            for char, box_pos in stack[:-1]:
-                if char != "O":
-                    raise SystemExit("Something went wrong")
-                new_box_positions.add(add_tuple(box_pos, direction))
-
-            boxes = (boxes - {b[1] for b in stack}) | new_box_positions
-
-    return sum(box[0] + 1 + (box[1] + 1) * 100 for box in boxes)
+    walls, boxes, character = parse_part_2(warehouse_lines)
+    peek(walls, boxes, character)
+    debug_b((30, 50), walls, boxes, character)
+    for direction in steps:
+        dir = DIRS[direction]
+        peek(direction)
+        boxes_to_move = get_boxes_part_2(character, dir, boxes, walls)
+        peek(boxes_to_move)
+        peek(character, direction)
+        if (
+            all(p + dir not in walls for box in boxes_to_move for p in box)
+            and character + dir not in walls
+        ):
+            character = character + dir
+            boxes = (boxes - boxes_to_move) | {
+                (box[0] + dir, box[1] + dir) for box in boxes_to_move
+            }
+        debug_b((30, 50), walls, boxes, character)
+    peek(boxes)
+    return sum((box[0][0] + box[0][1] * 100) for box in boxes)
 
 
 def expand_warehouse(lines):
-    return [
-        line[1:-1]
-        .replace("#", "##")
+    return (
+        lines.replace("#", "##")
         .replace(".", "..")
         .replace("@", "@.")
         .replace("O", "[]")
-        for line in lines
-    ]
+    )
 
 
 def debug_a(shape, walls, boxes, position):
     for y in range(-1, shape[1] + 1, 1):
         for x in range(-1, shape[0] + 1, 1):
-            if x in [-1, shape[0]] or y in [-1, shape[1]]:
-                print("#", end="")
-            elif (x, y) in walls:
+            if (x, y) in walls:
                 print("#", end="")
             elif (x, y) in boxes:
                 print("O", end="")
@@ -197,11 +165,9 @@ def debug_a(shape, walls, boxes, position):
 
 
 def debug_b(shape, walls, boxes, position):
-    for y in range(-1, shape[1] + 1):
-        for x in range(-1, shape[0] + 1):
-            if x in [-1, shape[0]] or y in [-1, shape[1]]:
-                print("#", end="")
-            elif (x, y) in walls:
+    for y in range(shape[0]):
+        for x in range(shape[1]):
+            if (x, y) in walls:
                 print("#", end="")
             elif ((x, y), (x + 1, y)) in boxes:
                 print("[", end="")
@@ -213,9 +179,3 @@ def debug_b(shape, walls, boxes, position):
                 print(".", end="")
         print("")
     print("")
-
-
-if __name__ == "__main__":
-    data = get_data(day=DAY, year=YEAR).strip()
-    parsed = parse(SAMPLE)
-    print(f"Part 1: {part_1(parsed)}")
