@@ -77,13 +77,15 @@ class Vec3:
             if len(other) != 3:
                 raise TypeError
             return Vec3(self.x - other[0], self.y - other[1], self.z - other[2])
-        return Vec3(self.x - other.x, self.y - other.y)
+        return Vec3(self.x - other.x, self.y - other.y, self.z - other.z)
 
     def __eq__(self, other):
         if type(other) is tuple:
             if len(other) != 3:
                 raise TypeError
-            return self.x == other[0] and self.y == other[1] and self.z == other[2]
+            return (
+                self.x == other[0] and self.y == other[1] and self.z == other[2]
+            )
         return self.x == other.x and self.y == other.y and self.z == other.z
 
     def __hash__(self):
