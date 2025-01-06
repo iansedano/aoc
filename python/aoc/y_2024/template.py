@@ -1,4 +1,7 @@
-from aoc.tools.grid import   
+from aoc.tools.grid import create_grid_dict_from_string
+
+
+
 
 def parse(puzzle_input):
     return puzzle_input.splitlines()

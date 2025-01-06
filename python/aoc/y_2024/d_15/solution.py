@@ -1,7 +1,7 @@
 import itertools
 
-from aoc.tools.peek import peek
 from aoc.tools.grid import create_grid_dict_from_string
+from aoc.tools.peek import peek
 from aoc.tools.vector import Vec2
 
 DIRS = {
