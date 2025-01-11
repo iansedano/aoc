@@ -6,7 +6,6 @@ from aoc.tools.vector import Vec2, add_tuple
 
 
 class Grid2D:
-
     @classmethod
     def from_string(cls, input, ignore=None):
         ignore = set() if ignore is None else ignore
@@ -32,12 +31,23 @@ def create_grid_dict_from_string(input, ignore=None, use_tuples=False):
     return grid
 
 
+def create_grid_bi_dict_from_string(input, ignore=None):
+    ignore = set() if ignore is None else ignore
+    grid = {}
+    mappings = defaultdict(set)
+    for y, line in enumerate(input.splitlines()):
+        for x, char in enumerate(line):
+            if char in ignore:
+                continue
+            pos = Vec2(x, y)
+            grid[pos] = char
+            mappings[char].add(pos)
+
+    return grid, mappings
+
+
 def print_points(points: Union[Iterable, tuple, dict], **kwargs):
-    if (
-        isinstance(points, tuple)
-        or isinstance(points, list)
-        or isinstance(points, set)
-    ):
+    if isinstance(points, tuple) or isinstance(points, list) or isinstance(points, set):
         _print_points_iterable(points, **kwargs)
         return
 
@@ -53,11 +63,8 @@ def _print_points_dict(
     y_range: Union[tuple, int, None] = None,
     auto_detect=False,
 ):
-
     if auto_detect and (x_range is not None or y_range is not None):
-        raise ValueError(
-            "auto_detect and x_range/y_range are mutually exclusive"
-        )
+        raise ValueError("auto_detect and x_range/y_range are mutually exclusive")
 
     if auto_detect:
         values = list(points.keys())
@@ -91,11 +98,8 @@ def _print_points_iterable(
     auto_detect=False,
     show_count=False,
 ):
-
     if auto_detect and (x_range is not None or y_range is not None):
-        raise ValueError(
-            "auto_detect and x_range/y_range are mutually exclusive"
-        )
+        raise ValueError("auto_detect and x_range/y_range are mutually exclusive")
 
     if auto_detect:
         x_range = (min(p[0] for p in points), max(p[0] for p in points) + 1)

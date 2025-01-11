@@ -14,6 +14,9 @@ class Vec2:
     def from_tuple(cls, tup):
         return cls(tup[0], tup[1])
 
+    def as_tuple(self):
+        return (self.x, self.y)
+
     def __add__(self, other):
         if isinstance(other, tuple):
             if len(other) != 2:
@@ -35,6 +38,14 @@ class Vec2:
             return self.x == other[0] and self.y == other[1]
         return self.x == other.x and self.y == other.y
 
+    def __lt__(self, other):
+        Vec2.assert_compatible(other)
+        return self.as_tuple() < other
+
+    def __gt__(self, other):
+        Vec2.assert_compatible(other)
+        return self.as_tuple() > other
+
     def __hash__(self):
         return hash((self.x, self.y))
 
@@ -53,6 +64,14 @@ class Vec2:
             return self.x
         if key == "y":
             return self.y
+
+    @staticmethod
+    def assert_compatible(other):
+        if isinstance(other, Vec2):
+            return
+        if isinstance(other, tuple) and len(other) == 2:
+            return
+        raise TypeError
 
 
 @dataclass(frozen=True)
@@ -83,9 +102,7 @@ class Vec3:
         if type(other) is tuple:
             if len(other) != 3:
                 raise TypeError
-            return (
-                self.x == other[0] and self.y == other[1] and self.z == other[2]
-            )
+            return self.x == other[0] and self.y == other[1] and self.z == other[2]
         return self.x == other.x and self.y == other.y and self.z == other.z
 
     def __hash__(self):

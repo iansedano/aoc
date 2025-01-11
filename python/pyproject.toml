@@ -10,6 +10,7 @@ dependencies = [
   "sympy",
   "peek-python",
   "drawille",
+  "bidict"
 ]
 
 [project.scripts]
