@@ -47,6 +47,8 @@ def create_grid_bi_dict_from_string(input, ignore=None):
 
 
 def print_points(points: Union[Iterable, tuple, dict], **kwargs):
+    if not points:
+        return
     if isinstance(points, tuple) or isinstance(points, list) or isinstance(points, set):
         _print_points_iterable(points, **kwargs)
         return
