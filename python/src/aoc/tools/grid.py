@@ -31,7 +31,13 @@ def create_grid_dict_from_string(input, ignore=None, use_tuples=False):
     return grid
 
 
-def create_grid_bi_dict_from_string(input, ignore=None):
+def create_grid_bi_dict_from_string(input, ignore=None, use_tuples=False):
+    """
+    Return a dict of { pos: char } and a dict of { char: { set of pos } }
+
+    >>> create_grid_bi_dict_from_string("..#")
+    ({Vec2(x=0, y=0): '.', Vec2(x=1, y=0): '.', Vec2(x=2, y=0): '#'}, defaultdict(<class 'set'>, {'.': {Vec2(x=1, y=0), Vec2(x=0, y=0)}, '#': {Vec2(x=2, y=0)}}))
+    """
     ignore = set() if ignore is None else ignore
     grid = {}
     mappings = defaultdict(set)
@@ -39,7 +45,7 @@ def create_grid_bi_dict_from_string(input, ignore=None):
         for x, char in enumerate(line):
             if char in ignore:
                 continue
-            pos = Vec2(x, y)
+            pos = Vec2(x, y) if not use_tuples else (x, y)
             grid[pos] = char
             mappings[char].add(pos)
 
@@ -152,7 +158,7 @@ def _print_points_iterable(
 
 
 def get_cardinals(
-    pos, limit_x: Union[int, tuple] = None, limit_y: Union[tuple | int] = None
+    pos, limit_x: int | tuple | None = None, limit_y: tuple | int | None = None
 ):
     """limit args can be either a tuple or an int. If an int is passed, it will be converted to a tuple (0, int)
     If None is passed, it will be converted to (-inf, inf)

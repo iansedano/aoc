@@ -54,9 +54,6 @@ class QueuePlus:
 
     def enqueue(self, *nodes):
         for n in nodes:
-            # if (n.position, n.heading) in self.visited:
-            #     continue
-            # self.visited.add((n.position, n.heading))
             heappush(self._items, n)
 
     def dequeue(self):
@@ -64,7 +61,7 @@ class QueuePlus:
 
 
 def build_get_next_possible(visited, walls):
-    def get_next_possible(node):
+    def get_next_possible(node: Node):
         other_headings = CARDINALS - {node.heading}
 
         turns = (

@@ -12,9 +12,14 @@ dependencies = [
   "drawille",
   "bidict"
 ]
+required_python = ">=3.13"
 
 [project.scripts]
 aoc = "aoc.runner:main"
+
+[build-system]
+requires = ["uv_build>=0.9.1,<0.10.0"]
+build-backend = "uv_build"
 
 [tool.black]
 line-length = 80
