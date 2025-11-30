@@ -10,9 +10,9 @@ BASE_DIR = Path(".")
 
 #
 FILES_TO_GENERATE = {
-    "__init__.py.j2": "y_{{ year }}/d_{{ day_padded }}/__init__.py",
-    "solution.py.j2": "y_{{ year }}/d_{{ day_padded }}/solution.py",
-    "examples.py.j2": "y_{{ year }}/d_{{ day_padded }}/examples.py",
+    "__init__.py.j2": "src/aoc/y_{{ year }}/d_{{ day_padded }}/__init__.py",
+    "solution.py.j2": "src/aoc/y_{{ year }}/d_{{ day_padded }}/solution.py",
+    "examples.py.j2": "src/aoc/y_{{ year }}/d_{{ day_padded }}/examples.py",
 }
 
 
