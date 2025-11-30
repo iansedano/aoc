@@ -10,9 +10,10 @@ dependencies = [
   "sympy",
   "peek-python",
   "drawille",
-  "bidict"
+  "bidict",
+  "jinja2>=3.1.6",
 ]
-required_python = ">=3.13"
+requires-python = ">=3.13"
 
 [project.scripts]
 aoc = "aoc.runner:main"

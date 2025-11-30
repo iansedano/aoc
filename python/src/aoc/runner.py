@@ -5,8 +5,9 @@ from importlib import import_module
 from pprint import pp
 
 import peek
-from aoc.tools.time_perf import time_perf
 from aocd import get_data
+
+from aoc.tools.time_perf import time_perf
 
 
 def main():
